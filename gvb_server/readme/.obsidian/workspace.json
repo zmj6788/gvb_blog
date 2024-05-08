@@ -1,0 +1,181 @@
+{
+  "main": {
+    "id": "fe8782f819adad13",
+    "type": "split",
+    "children": [
+      {
+        "id": "4a8a9bb4b7be201d",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "b56e002c78c6b2a2",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "4.图片上传api/04-图片入库.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "33a9e14093de1e05",
+    "type": "split",
+    "children": [
+      {
+        "id": "7b602e67614ef081",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "286950b59c7085a9",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "0e9862150de6982c",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "fbe4b31b9a42a829",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "7321819c706c3388",
+    "type": "split",
+    "children": [
+      {
+        "id": "e6ce7f28c1f0c408",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "2aa498b775d5bf9d",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "4.图片上传api/04-图片入库.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "21323108744651fd",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "4.图片上传api/04-图片入库.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "0870d04623beae2f",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "4ea49f9e7525c869",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "4.图片上传api/04-图片入库.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false
+    }
+  },
+  "active": "b56e002c78c6b2a2",
+  "lastOpenFiles": [
+    "1.后端项目创建/04-路由初始化.md",
+    "4.图片上传api/04-图片入库.md",
+    "4.图片上传api/00-图片上传相关目录.md",
+    "4.图片上传api/01-单多个图片上传.md",
+    "4.图片上传api/02-上传图片保存.md",
+    "4.图片上传api/03-黑白名单.md",
+    "2.表结构搭建/00-目录结构.md",
+    "3.系统配置api/01-系统信息获取.md",
+    "3.系统配置api/00-系统信息编写.md",
+    "3.系统配置api/03-其他配置信息编写.md",
+    "3.系统配置api/04-多配置信息统一管理.md",
+    "3.系统配置api/Pasted image 20240424100436.png",
+    "3.系统配置api/02-系统信息更改.md",
+    "3.系统配置api/settings.yaml中信息分类.md",
+    "4.图片上传api.md",
+    "4.图片上传api",
+    "2.表结构搭建/Pasted image 20240422183916.png",
+    "2.表结构搭建/03-表结构迁移.md",
+    "3.系统配置api",
+    "2.表结构搭建/02-其他表.md",
+    "1.后端项目创建/image.png",
+    "1.后端项目创建/00-项目结构.md",
+    "Pasted image 20240422183834.png",
+    "img/Pasted image 20240422183603.png",
+    "2.表结构搭建/01-用户表.md",
+    "img",
+    "2.表结构搭建/Pasted image 20240422183508.png",
+    "未命名.canvas",
+    "1.后端项目创建/06-响应封装.md"
+  ]
+}

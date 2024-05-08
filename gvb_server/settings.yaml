@@ -1,0 +1,76 @@
+mysql:
+  host: 127.0.0.1
+  port: 3306
+<<<<<<< HEAD
+  config: ?charset=utf8mb4&parseTime=True&loc=Local
+  db: gvb_db
+  user: root
+  password: "123456"
+  log_level: dev
+system:
+  host: 0.0.0.0
+  port: 8080
+  env: release
+=======
+  config: 
+  db: gvb_db
+  user: root
+  password: 123456
+  log_level: dev
+>>>>>>> 2f9e4d1a6a0ab0002a002517dace0301441cd6ca
+logger:
+  level: info
+  prefix: '[gvb]'
+  director: log
+  show_line: true
+  log_in_console: true
+<<<<<<< HEAD
+site_info:
+  created_at: "2024-04-23"
+  bei_an: 暂无备案
+  title: 张明杰的个人博客
+  qq_image: https://image.baidu.com/search/albumsdetail?tn=albumsdetail&word=%E5%AE%A0%E7%89%A9%E5%9B%BE%E7%89%87&fr=albumslist&album_tab=%E5%8A%A8%E7%89%A9&album_id=688&rn=30
+  version: v1.0.0
+  email: 2124427385@qq.com
+  wechat_image: https://image.baidu.com/search/albumsdetail?tn=albumsdetail&word=%E6%B8%90%E5%8F%98%E9%A3%8E%E6%A0%BC%E6%8F%92%E7%94%BB&fr=albumslist&album_tab=%E8%AE%BE%E8%AE%A1%E7%B4%A0%E6%9D%90&album_id=409&rn=30
+  name: zmj
+  job: 后端开发
+  addr: 河南郑州
+  slogan: mj_blog
+  web: https://www.mj.com
+  bilibili_url: https://space.bilibili.com/3546656056281480?spm_id_from=333.788.0.0
+  gitee_url: https://gitee.com/zhang-mingjie970853
+  github_url: https://github.com/zmj6788
+email:
+  host: smtp.qq.com
+  port: 465
+  user: xxx@qq.com
+  password: xxx
+  default_from_email: 枫枫知道
+  use_ssl: false
+  use_tls: false
+jwt:
+  secret: xxx
+  expires: 48
+  issuer: xx
+qi_niu:
+  enable: false
+  access_key: UMM-xx-FdRIf-xx
+  secret_key: xx
+  bucket: fengfengzhidao
+  cdn: xx://XX.XX.com/
+  zone: xx
+  size: 5
+qq:
+  app_id: zmj
+  key: 芝麻开门
+  redirect: http://xx.xx.com/login?flag=qq
+upload:
+  size: 2
+  path: uploads/file/
+=======
+system:
+  host: "0.0.0.0"
+  port: 8080
+  env: release
+>>>>>>> 2f9e4d1a6a0ab0002a002517dace0301441cd6ca
