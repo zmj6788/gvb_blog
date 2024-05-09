@@ -7,6 +7,7 @@ import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/reset.css';
 import "font-awesome/css/font-awesome.min.css";
 import "./assets/css/iconfont.css";
+
 const app = createApp(App)
 
 app.use(createPinia())
