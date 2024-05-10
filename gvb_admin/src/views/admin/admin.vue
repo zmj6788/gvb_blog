@@ -5,7 +5,7 @@
     <div class="main">
       <header>
         <div class="left">
-          <a-breadcrumb>
+          <a-breadcrumb separator="  ">
             <a-breadcrumb-item>首页</a-breadcrumb-item>
             <a-breadcrumb-item><a href="">个人中心</a></a-breadcrumb-item>
             <a-breadcrumb-item>用户列表</a-breadcrumb-item>
@@ -15,8 +15,8 @@
           <div class="actions">
             <div class="icon_actions">
               <i class="fa fa-home"></i>
-              <i class="fa fa-moon-o"></i>
-              <i class="fa fa-sun-o"></i>
+              <i v-if="theme" class="fa fa-sun-o" @click="setTheme"></i>
+              <i v-else class="fa fa-moon-o" @click="setTheme"></i>
               <i class="fa fa-arrows-alt"></i>
             </div>
             <div class="avatar">
@@ -59,7 +59,8 @@
 
 <script setup>
 import { useRouter } from 'vue-router'
-
+import { ref } from 'vue'
+//下拉菜单点击事件
 const router = useRouter()
 const menuDrop = key  => {
   // console.log(key.key)
@@ -67,6 +68,18 @@ const menuDrop = key  => {
     return
   }
   router.push({name:key.key})
+}
+//主题切换
+const theme = ref(true) //ture白色主题 false黑色主题
+const setTheme = () => {
+  theme.value = !theme.value
+  if(theme.value){
+    //白色主题
+    document.documentElement.classList.remove('dark')
+  }else{
+    //黑色主题
+    document.documentElement.classList.add('dark')
+  }
 }
 </script>
 
@@ -79,7 +92,7 @@ const menuDrop = key  => {
 aside {
   width: 240px;
   height: 100vh;
-  background-color: #2b3539;
+  background-color: var(--slide);
 }
 
 .main {
@@ -87,7 +100,7 @@ aside {
 
   header {
     height: 60px;
-    background-color: white;
+    background-color: var(--hd);
     padding: 0 20px;
     display: flex;
     justify-content: space-between;
@@ -131,10 +144,11 @@ aside {
   .tabs {
     height: 30px;
     border: 1px solid #f0eeee;
+    background-color: var(--order);
   }
 
   main {
-    background-color: #f0eeee;
+    background-color: var(--bg);
     height: calc(100vh - 90px);
   }
 }
