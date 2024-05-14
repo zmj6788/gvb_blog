@@ -8,5 +8,6 @@ import (
 
 func ImagesRouter(router *gin.RouterGroup) {
 	ImagesApi := api.ApiGroupApp.ImagesApi
+	router.GET("/images", ImagesApi.ImageListView)
 	router.POST("/images", ImagesApi.ImageUploadView)
 }
