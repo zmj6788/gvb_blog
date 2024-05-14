@@ -34,11 +34,7 @@ func Ok(data any, msg string, c *gin.Context) {
 // 第二个参数用map[string]any{}原因
 // map[string]any{}可以接收任意类型的值，便于返回数据时不出错误
 func OkWithData(data any, c *gin.Context) {
-<<<<<<< HEAD
 	Result(Success, data, "获取数据成功", c)
-=======
-	Result(Success, map[string]any{}, "获取数据成功", c)
->>>>>>> 2f9e4d1a6a0ab0002a002517dace0301441cd6ca
 }
 func OkWithMessage(msg string, c *gin.Context) {
 	Result(Success, map[string]any{}, msg, c)

@@ -12,11 +12,7 @@ type ArticleModel struct {
 	CommentCount  int            ` json:"comment_count"`                           // 文章评论量
 	DiggCount     int            ` json:"digg_count"`                              // 文章点赞量
 	CollectCount  int            ` json:"collect_count"`                           // 文章收藏量
-<<<<<<< HEAD
 	TagModels     []TagModel     `gorm:"many2many:article_tag_models;" json:"tag_models"` // 文章标签
-=======
-	TagModels     []TagModel     `gorm:"many2many:article_tag;" json:"tag_models"` // 文章标签
->>>>>>> 2f9e4d1a6a0ab0002a002517dace0301441cd6ca
 	CommentModels []CommentModel `gorm:"foreignKey:ArticleID" json:"-"`            // 文章评论列表
 	UserModel     UserModel      `gorm:"foreignKey:UserID" json:"-"`               // 文章作者
 	UserID        uint           ` json:"user_id"`                                 // 用户id

@@ -1,16 +1,12 @@
 package settings_api
 
 import (
-<<<<<<< HEAD
 	"gvb_server/global"
-=======
->>>>>>> 2f9e4d1a6a0ab0002a002517dace0301441cd6ca
 	"gvb_server/models/res"
 
 	"github.com/gin-gonic/gin"
 )
 
-<<<<<<< HEAD
 type SettingsUri struct {
 	Name string `uri:"name"`
 }
@@ -41,8 +37,4 @@ func (SettingsApi) SettingsInfoView(c *gin.Context) {
 	default:
 		res.FailWithMessage("没有对应的配置信息", c)
 	}
-=======
-func (SettingsApi) SettingsInfoView(c *gin.Context) {
-	res.FailWithCode(1001, c)
->>>>>>> 2f9e4d1a6a0ab0002a002517dace0301441cd6ca
 }

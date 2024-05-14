@@ -1,10 +1,6 @@
 module gvb_server
 
-<<<<<<< HEAD
 go 1.22.2
-=======
-go 1.22.1
->>>>>>> 2f9e4d1a6a0ab0002a002517dace0301441cd6ca
 
 require (
 	github.com/gin-gonic/gin v1.9.1

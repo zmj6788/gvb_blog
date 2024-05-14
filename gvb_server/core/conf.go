@@ -10,17 +10,10 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-<<<<<<< HEAD
 const configFile = "settings.yaml"
 // 读取配置操作
 // 读取yaml文件的配置
 func InitConf() {
-=======
-// 读取配置操作
-// 读取yaml文件的配置
-func InitConf() {
-	const configFile = "settings.yaml"
->>>>>>> 2f9e4d1a6a0ab0002a002517dace0301441cd6ca
 	c := &config.Config{}
 	yamlConfig, err := ioutil.ReadFile(configFile)
 	if err != nil {
@@ -33,7 +26,6 @@ func InitConf() {
 	log.Println("config yamlFile load Init success.")
 	global.Config = c
 }
-<<<<<<< HEAD
 
 func SetYaml() error{
 	data := global.Config
@@ -49,5 +41,3 @@ func SetYaml() error{
 	}
 	return nil
 }
-=======
->>>>>>> 2f9e4d1a6a0ab0002a002517dace0301441cd6ca
