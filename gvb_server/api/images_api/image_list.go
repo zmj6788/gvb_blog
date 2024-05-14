@@ -6,7 +6,6 @@ import (
 	"gvb_server/models/res"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 )
 
 // 用于分页查询
@@ -21,7 +20,6 @@ func (ImagesApi) ImageListView(c *gin.Context) {
 
 	var page Page
 	err := c.ShouldBindQuery(&page)
-	logrus.Info(page)
 	if err != nil {
 		res.FailWithCode(res.ArgumentError, c)
 		return

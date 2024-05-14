@@ -137,7 +137,6 @@ func (ImagesApi) ImageUploadView(c *gin.Context) {
 			})
 			return
 		}
-
 		iml = append(iml, FileUploadResponse{
 			FileName:  filePath,
 			IsSuccess: true,
