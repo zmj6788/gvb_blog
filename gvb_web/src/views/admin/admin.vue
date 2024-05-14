@@ -15,8 +15,8 @@
           <div class="actions">
             <div class="icon_actions">
               <i class="fa fa-home"></i>
-              <i v-if="theme" class="fa fa-sun-o" @click="setTheme"></i>
-              <i v-else class="fa fa-moon-o" @click="setTheme"></i>
+              <GVBTheme></GVBTheme>
+
               <i class="fa fa-arrows-alt"></i>
             </div>
             <div class="avatar">
@@ -58,8 +58,8 @@
 </template>
 
 <script setup>
+import GVBTheme from '../../components/admin/gvb_theme.vue'
 import { useRouter } from 'vue-router'
-import { ref } from 'vue'
 //下拉菜单点击事件
 const router = useRouter()
 const menuDrop = key  => {
@@ -69,18 +69,8 @@ const menuDrop = key  => {
   }
   router.push({name:key.key})
 }
-//主题切换
-const theme = ref(true) //ture白色主题 false黑色主题
-const setTheme = () => {
-  theme.value = !theme.value
-  if(theme.value){
-    //白色主题
-    document.documentElement.classList.remove('dark')
-  }else{
-    //黑色主题
-    document.documentElement.classList.add('dark')
-  }
-}
+
+
 </script>
 
 <style lang="scss">
