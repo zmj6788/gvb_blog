@@ -11,6 +11,11 @@ type Response struct {
 	Data any    `json:"data"`
 	Msg  string `json:"msg"`
 }
+// 封装获取列表数据的响应的数据结构
+type ListResponse[T any] struct {
+	Count int64  `json:"count"`
+	List T `json:"list"`
+}
 
 const (
 	Success = 200
@@ -35,6 +40,13 @@ func Ok(data any, msg string, c *gin.Context) {
 // map[string]any{}可以接收任意类型的值，便于返回数据时不出错误
 func OkWithData(data any, c *gin.Context) {
 	Result(Success, data, "获取数据成功", c)
+}
+//封装获取列表数据的响应格式
+func OkWithList(list any,count int64, c *gin.Context) {
+	OkWithData(ListResponse[any]{
+		Count: count,
+		List: list,
+	}, c)
 }
 func OkWithMessage(msg string, c *gin.Context) {
 	Result(Success, map[string]any{}, msg, c)

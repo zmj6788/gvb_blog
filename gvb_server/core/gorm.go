@@ -24,6 +24,8 @@ func Initgorm() *gorm.DB {
 		//只打印错误的sql日志
 		mysqlLogger = logger.Default.LogMode(logger.Error)
 	}
+	//自定义数据库日志，便于查看某一个服务的日志
+	global.MysqlLog = logger.Default.LogMode(logger.Info)
 
 	dsn := global.Config.MySQL.Dsn()
 
