@@ -1,7 +1,7 @@
 <template>
   <div class="gvb_admin">
-    <aside>
-    </aside>
+    <GVBAside></GVBAside>
+
     <div class="main">
       <header>
         <div class="left">
@@ -58,7 +58,8 @@
 </template>
 
 <script setup>
-import GVBTheme from '../../components/admin/gvb_theme.vue'
+import GVBTheme from '../../components/gvb_theme.vue'
+import GVBAside from '../../components/admin/gvb_aside.vue'
 import { useRouter } from 'vue-router'
 //下拉菜单点击事件
 const router = useRouter()
@@ -79,11 +80,6 @@ const menuDrop = key  => {
   display: flex;
 }
 
-aside {
-  width: 240px;
-  height: 100vh;
-  background-color: var(--slide);
-}
 
 .main {
   width: calc(100% - 240px);
