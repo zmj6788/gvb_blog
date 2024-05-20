@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "4.图片相关api/2.图片列表api/02-封装分页查询列表.md",
+                "file": "4.图片相关api/3.图片删除api/00-图片删除相关目录.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "4.图片相关api/2.图片列表api/02-封装分页查询列表.md",
+                "file": "4.图片相关api/3.图片删除api/00-图片删除相关目录.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "4.图片相关api/2.图片列表api/02-封装分页查询列表.md",
+                "file": "4.图片相关api/3.图片删除api/00-图片删除相关目录.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "4.图片相关api/2.图片列表api/02-封装分页查询列表.md"
+                "file": "4.图片相关api/3.图片删除api/00-图片删除相关目录.md"
               }
             }
           }
@@ -148,12 +148,15 @@
   },
   "active": "b56e002c78c6b2a2",
   "lastOpenFiles": [
+    "4.图片相关api/2.图片列表api/00-图片列表相关目录.md",
+    "4.图片相关api/3.图片删除api/00-图片删除相关目录.md",
+    "4.图片相关api/3.图片删除api",
     "4.图片相关api/2.图片列表api/01-图片列表分页查询.md",
     "4.图片相关api/2.图片列表api/02-封装分页查询列表.md",
+    "4.图片相关api/2.图片列表api/03-实现图片列表排序.md",
     "4.图片相关api/1.图片上传api/03-黑白名单.md",
     "4.图片相关api/1.图片上传api/01-单多个图片上传.md",
     "4.图片相关api/1.图片上传api/00-图片上传相关目录.md",
-    "4.图片相关api/2.图片列表api/00-图片列表相关目录.md",
     "4.图片相关api/2.图片列表api",
     "4.图片相关api",
     "4.图片相关api/1.图片上传api/04-图片入库.md",

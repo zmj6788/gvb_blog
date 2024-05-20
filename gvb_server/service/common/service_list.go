@@ -18,7 +18,10 @@ func ComList[T any](model T , option Option) (list []T, count int64, err error) 
 	if option.Debug {
 		DB = global.DB.Session(&gorm.Session{Logger: global.MysqlLog})
 	}
-
+	//排序
+	if option.Sort == "" {
+		option.Sort = "created_at desc" //默认排序创建顺序desc从晚到早.asc从早到晚
+	}
 	count = DB.Select("id").Find(&list).RowsAffected
 	//偏移量
 	offset := (option.Page - 1) * option.Limit
@@ -30,7 +33,7 @@ func ComList[T any](model T , option Option) (list []T, count int64, err error) 
 	if option.Limit == 0 {
 		option.Limit = -1
 	}
-	err = DB.Limit(option.Limit).Offset(offset).Find(&list).Error
+	err = DB.Limit(option.Limit).Offset(offset).Order(option.Sort).Find(&list).Error
 
 	return list, count, err
 }

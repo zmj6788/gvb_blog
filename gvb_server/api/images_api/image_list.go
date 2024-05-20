@@ -6,12 +6,14 @@ import (
 	"gvb_server/service/common"
 
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 func (ImagesApi) ImageListView(c *gin.Context) {
 
 	var page models.PageInfo
 	err := c.ShouldBindQuery(&page)
+	logrus.Info(page)
 	if err != nil {
 		res.FailWithCode(res.ArgumentError, c)
 		return
