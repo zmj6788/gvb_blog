@@ -16,3 +16,8 @@ type PageInfo struct {
 	Limit int    `form:"limit"` //每页显示多少条
 	Sort  string `form:"sort"`  //排序
 }
+
+//用于接收删除请求
+type RemoveRequest struct {
+	IDList []uint `json:"id_list"`
+}
