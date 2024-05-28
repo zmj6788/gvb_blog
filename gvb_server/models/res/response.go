@@ -1,6 +1,7 @@
 package res
 
 import (
+	"gvb_server/untils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -58,6 +59,10 @@ func Fail(data any, msg string, c *gin.Context) {
 
 func FailWithMessage(msg string, c *gin.Context) {
 	Result(Error, map[string]any{}, msg, c)
+}
+func FailWithError(err error, obj any, c *gin.Context) {
+	msg := untils.GetValidMsg(err, obj)
+	FailWithMessage(msg, c)
 }
 func FailWithCode(code ErrorCode, c *gin.Context) {
 	//根据错误码获取错误信息

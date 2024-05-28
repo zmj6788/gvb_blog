@@ -11,4 +11,5 @@ func ImagesRouter(router *gin.RouterGroup) {
 	router.GET("/images", ImagesApi.ImageListView)
 	router.POST("/images", ImagesApi.ImageUploadView)
 	router.DELETE("/images", ImagesApi.ImageRemoveView)
+	router.PUT("/images", ImagesApi.ImageUpdateView)
 }
