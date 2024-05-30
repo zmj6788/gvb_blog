@@ -45,12 +45,12 @@ jwt:
   expires: 48
   issuer: xx
 qi_niu:
-  enable: false
-  access_key: UMM-xx-FdRIf-xx
-  secret_key: xx
-  bucket: fengfengzhidao
-  cdn: xx://XX.XX.com/
-  zone: xx
+  enable: true
+  access_key: UZOwq0yrXuFt03vI-Be6C80h2Zvg-yNyXa0jEQ0T
+  secret_key: ToRD6VYNiBngPULYrnE4_tq0zhxCu1DUM0WtZ8Wp
+  bucket: zmj99
+  cdn: se9wbeejz.hn-bkt.clouddn.com
+  zone: z2
   size: 5
 qq:
   app_id: zmj

@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"gvb_server/global"
 	"gvb_server/models"
+	"gvb_server/models/ctype"
 	"gvb_server/models/res"
+	"gvb_server/plugins/qiniu"
 	"gvb_server/untils"
 	"io/fs"
 	"io/ioutil"
@@ -93,12 +95,12 @@ func (ImagesApi) ImageUploadView(c *gin.Context) {
 
 		//根据图片大小判断是否存储
 		filesize := float64(file.Size) / float64(1024*1024)
-		if filesize > global.Config.QiNiu.Size {
+		if filesize > global.Config.Upload.Size {
 			//图片大于5M，无法存储
 			iml = append(iml, FileUploadResponse{
 				FileName:  filename,
 				IsSuccess: false,
-				Msg:       fmt.Sprintf("图片大于%dMB，当前文件大小为：%.2fMB，无法存储", int(global.Config.QiNiu.Size), filesize),
+				Msg:       fmt.Sprintf("图片大于%dMB，当前文件大小为：%.2fMB，无法存储", int(global.Config.Upload.Size), filesize),
 			})
 			continue
 
@@ -125,9 +127,36 @@ func (ImagesApi) ImageUploadView(c *gin.Context) {
 			})
 			continue
 		}
+		//保存至本地之前判断是否上传至七牛云
+		if global.Config.QiNiu.Enable {
+			filePath, err := qiniu.UploadImage(byteData, filename, "images")
+			if err != nil {
+				logrus.Error(err)
+				iml = append(iml, FileUploadResponse{
+					FileName:  filename,
+					IsSuccess: false,
+					Msg:       err.Error(),
+				})
+				continue
+			}
+			iml = append(iml, FileUploadResponse{
+				FileName:  filePath,
+				IsSuccess: true,
+				Msg:       "上传七牛云成功",
+			})
+			global.DB.Create(&models.BannerModel{
+			Path: filePath,
+			Hash: hashstr,
+			Name: filename,
+			ImageType: ctype.QiNiu,
+		})
+			continue
+		}
+
 		//保存文件到本地目录
 		filePath := basepath + filename
 		err = c.SaveUploadedFile(file, filePath)
+		// qiniu.UploadImage()
 		if err != nil {
 			logrus.Error(err)
 			iml = append(iml, FileUploadResponse{
@@ -135,7 +164,7 @@ func (ImagesApi) ImageUploadView(c *gin.Context) {
 				IsSuccess: false,
 				Msg:       err.Error(),
 			})
-			return
+			continue
 		}
 		iml = append(iml, FileUploadResponse{
 			FileName:  filePath,
@@ -148,6 +177,7 @@ func (ImagesApi) ImageUploadView(c *gin.Context) {
 			Path: filePath,
 			Hash: hashstr,
 			Name: filename,
+			ImageType: ctype.Local,
 		})
 
 	}
