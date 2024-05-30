@@ -1,17 +1,12 @@
 package images_api
 
 import (
-	"fmt"
 	"gvb_server/global"
-	"gvb_server/models"
-	"gvb_server/models/ctype"
 	"gvb_server/models/res"
-	"gvb_server/plugins/qiniu"
-	"gvb_server/untils"
+	"gvb_server/service"
+	"gvb_server/service/image_service"
 	"io/fs"
-	"io/ioutil"
 	"os"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
@@ -72,114 +67,32 @@ func (ImagesApi) ImageUploadView(c *gin.Context) {
 			return
 		}
 	}
-
-	var iml []FileUploadResponse
-	//图片文件的存储
+	//遍历文件，做上传文件操作
+	var resList []image_service.FileUploadResponse
 	for _, file := range fileList {
-		//获取文件后缀判读是否在白名单中，即是否允许上传
-		filename := file.Filename
-		namelist := strings.Split(filename, ".")
-		//获取文件后缀并小写处理
-		suffix := strings.ToLower(namelist[len(namelist)-1])
-		//判断是否在白名单中
-		//编写工具类便于后续使用
-		legal := untils.InList(suffix, WhiteImageList)
-		if !legal {
-			iml = append(iml, FileUploadResponse{
-				FileName:  filename,
-				IsSuccess: false,
-				Msg:       "文件不合法，请上传有效图片文件",
-			})
-			continue
-		}
 
-		//根据图片大小判断是否存储
-		filesize := float64(file.Size) / float64(1024*1024)
-		if filesize > global.Config.Upload.Size {
-			//图片大于5M，无法存储
-			iml = append(iml, FileUploadResponse{
-				FileName:  filename,
-				IsSuccess: false,
-				Msg:       fmt.Sprintf("图片大于%dMB，当前文件大小为：%.2fMB，无法存储", int(global.Config.Upload.Size), filesize),
-			})
-			continue
-
-		}
-		//获取文件内容加密hash值
-		fileObj, err := file.Open()
-		if err != nil {
-			logrus.Error(err)
-		}
-		byteData, err := ioutil.ReadAll(fileObj)
-		if err != nil {
-			logrus.Error(err)
-		}
-		hashstr := untils.MD5(byteData)
-		//判断文件是否存在数据库中
-		var bannerModel models.BannerModel
-		err = global.DB.Take(&bannerModel, "hash = ?", hashstr).Error
-		if err == nil {
-			//查找到该文件
-			iml = append(iml, FileUploadResponse{
-				FileName:  bannerModel.Path,
-				IsSuccess: false,
-				Msg:       "文件已存在，无需重复上传",
-			})
+		// 上传文件
+		serviceRes := service.Services.ImageService.ImageUploadService(file)
+		if !serviceRes.IsSuccess {
+			resList = append(resList, serviceRes)
 			continue
 		}
-		//保存至本地之前判断是否上传至七牛云
-		if global.Config.QiNiu.Enable {
-			filePath, err := qiniu.UploadImage(byteData, filename, "images")
+		// 成功的
+		if !global.Config.QiNiu.Enable {
+			// 本地还得保存一下
+			//上传成功但是七牛云存储没有开启，说明是本地存储成功，保存一下
+			err = c.SaveUploadedFile(file, serviceRes.FileName)
 			if err != nil {
-				logrus.Error(err)
-				iml = append(iml, FileUploadResponse{
-					FileName:  filename,
-					IsSuccess: false,
-					Msg:       err.Error(),
-				})
+				global.Log.Error(err)
+				serviceRes.Msg = err.Error()
+				serviceRes.IsSuccess = false
+				resList = append(resList, serviceRes)
 				continue
 			}
-			iml = append(iml, FileUploadResponse{
-				FileName:  filePath,
-				IsSuccess: true,
-				Msg:       "上传七牛云成功",
-			})
-			global.DB.Create(&models.BannerModel{
-			Path: filePath,
-			Hash: hashstr,
-			Name: filename,
-			ImageType: ctype.QiNiu,
-		})
-			continue
 		}
-
-		//保存文件到本地目录
-		filePath := basepath + filename
-		err = c.SaveUploadedFile(file, filePath)
-		// qiniu.UploadImage()
-		if err != nil {
-			logrus.Error(err)
-			iml = append(iml, FileUploadResponse{
-				FileName:  filename,
-				IsSuccess: false,
-				Msg:       err.Error(),
-			})
-			continue
-		}
-		iml = append(iml, FileUploadResponse{
-			FileName:  filePath,
-			IsSuccess: true,
-			Msg:       "上传成功",
-		})
-		//存储文件信息到数据库
-		//图片入库
-		global.DB.Create(&models.BannerModel{
-			Path: filePath,
-			Hash: hashstr,
-			Name: filename,
-			ImageType: ctype.Local,
-		})
-
+		resList = append(resList, serviceRes)
 	}
-	res.Ok(iml, "响应成功", c)
+
+	res.Ok(resList, "响应成功", c)
+	
 }

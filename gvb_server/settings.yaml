@@ -57,5 +57,5 @@ qq:
   key: 芝麻开门
   redirect: http://xx.xx.com/login?flag=qq
 upload:
-  size: 2
+  size: 5
   path: uploads/file/
