@@ -146,8 +146,11 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "b56e002c78c6b2a2",
+  "active": "286950b59c7085a9",
   "lastOpenFiles": [
+    "7.air 项目自动重启",
+    "6.swag集成使用",
+    "5.广告管理api",
     "4.图片相关api/1.图片上传api/04-图片入库.md",
     "4.图片相关api/1.图片上传api/05-图片上传至七牛云.md",
     "4.图片相关api/1.图片上传api/06-上传图片优化.md",

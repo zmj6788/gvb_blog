@@ -11,6 +11,14 @@ type SettingsUri struct {
 	Name string `uri:"name"`
 }
 // SettingsInfoView 获取配置信息
+// @Tags 系统管理
+// @Summary 系统配置查看
+// @Description 获取指定类型的配置信息
+// @ID get-settings-info
+// @Param name path string true "配置类型名称"
+// @Router /api/settings/{name} [get]
+// @Produce json
+// @Success 200 {object} res.Response{}
 func (SettingsApi) SettingsInfoView(c *gin.Context) {
 	var uri SettingsUri
 	// 绑定uri参数

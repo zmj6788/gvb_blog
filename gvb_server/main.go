@@ -5,8 +5,13 @@ import (
 	"gvb_server/flag"
 	"gvb_server/global"
 	"gvb_server/routers"
+	_"gvb_server/docs"
 )
-
+// @title gvb_server API文档
+// @version 1.0
+// @description gvb_server API文档
+// @host 127.0.0.1:8080
+// @BasePath /
 func main() {
 	// 配置信息读取
 	core.InitConf()

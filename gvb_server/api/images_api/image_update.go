@@ -13,6 +13,16 @@ type ImageUpdateRequest struct {
 	ID   uint   `json:"id" binding:"required" msg:"请选择有效文件id"`
 	Name string `json:"name" binding:"required" msg:"请输入修改后的文件名称"`
 }
+
+// ImageUpdateView 更新图片
+// @Tags 图片管理
+// @Summary 更新图片
+// @Param token header string  true  "token"
+// @Description 更新图片
+// @Param data body ImageUpdateRequest    true  "图片的一些参数"
+// @Router /api/images [put]
+// @Produce json
+// @Success 200 {object} res.Response{}
 // 图片更新接口函数
 func (ImagesApi) ImageUpdateView(c *gin.Context) {
 	var req ImageUpdateRequest

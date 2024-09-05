@@ -40,6 +40,17 @@ type FileUploadResponse struct {
 }
 
 // ImageUploodView上传到个图片，返回图片的url
+
+// ImageUploadView 上传图片
+// @Tags 图片管理
+// @Summary 上传图片
+// @Description 上传图片
+// @Accept multipart/form-data
+// @Param images formData file true "要上传的图片文件"
+// @Param token header string  true  "token"
+// @Router /api/images [post]
+// @Produce json
+// @Success 200 {object} res.Response{data=res.ListResponse[FileUploadResponse]}
 func (ImagesApi) ImageUploadView(c *gin.Context) {
 	//获取单个上传的文件
 	//FileHeader, err := c.FormFile("image")
