@@ -14,5 +14,6 @@ func InitRouter() *gin.Engine {
 	routerGroup := router.Group("/api")
 	SettingsRouter(routerGroup)
 	ImagesRouter(routerGroup)
+	AdvertRouter(routerGroup)
 	return router
 }

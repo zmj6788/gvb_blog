@@ -22,7 +22,13 @@ func ComList[T any](model T , option Option) (list []T, count int64, err error) 
 	if option.Sort == "" {
 		option.Sort = "created_at desc" //默认排序创建顺序desc从晚到早.asc从早到晚
 	}
-	count = DB.Select("id").Find(&list).RowsAffected
+
+	//嵌套一层查询数据库中的这个结构体
+	query := DB.Where(model)
+	
+	count = query.Select("id").Find(&list).RowsAffected
+	//复位
+	query = DB.Where(model)
 	//偏移量
 	offset := (option.Page - 1) * option.Limit
 	//如果偏移量小于0，则从0开始
@@ -33,7 +39,7 @@ func ComList[T any](model T , option Option) (list []T, count int64, err error) 
 	if option.Limit == 0 {
 		option.Limit = -1
 	}
-	err = DB.Limit(option.Limit).Offset(offset).Order(option.Sort).Find(&list).Error
+	err = query.Limit(option.Limit).Offset(offset).Order(option.Sort).Find(&list).Error
 
 	return list, count, err
 }
