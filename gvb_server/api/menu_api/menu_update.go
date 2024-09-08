@@ -20,7 +20,7 @@ import (
 // @Router /api/menus/{id} [put]
 // @Produce json
 // @Success 200 {object} res.Response{}
-func (*MenuApi) MenuUpdateView(c *gin.Context) {
+func (MenuApi) MenuUpdateView(c *gin.Context) {
 	id := c.Param("id")
 	var cr MenuRequest
 	err := c.ShouldBindJSON(&cr)

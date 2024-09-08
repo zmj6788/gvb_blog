@@ -34,6 +34,8 @@ func (*MenuApi) MenuListView(c *gin.Context) {
 	//查连接表
 	//用菜单id去查出菜单关联的图片数据
 	var menuBanners []models.MenuBannerModel
+	//Preload("BannerModel")：这是预加载 BannerModel 关联的数据，以避免 N+1 查询问题。
+	// 这意味着在查询 menuBanners 的同时，会预加载每个 menuBanner 的 BannerModel 关联数据。
 	global.DB.Preload("BannerModel").Order("sort desc").Find(&menuBanners, "menu_id in ?", menuIdList)
 	//封装响应数据
 	var menus []MenuResponse
