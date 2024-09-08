@@ -5,8 +5,8 @@ import "gvb_server/models/ctype"
 // MenuModel 菜单表
 type MenuModel struct {
 	MODEL
-	MenuTitle    string        `gorm:"size:32" json:"menu_title"`                                                                  //菜单标题
-	MenuTitleEn  string        `gorm:"size:32" json:"menu_title_en"`                                                               //菜单标题
+	Title    string        `gorm:"size:32" json:"title"`                                                                  //菜单标题
+	Path         string        `gorm:"size:32" json:"path"`                                                             //菜单标题
 	Slogan       string        `gorm:"size:64" json:"slogan"`                                                                      //简介
 	Abstract     ctype.Array   `gorm:"type:string" json:"abstract"`                                                                //简介
 	AbstractTime int           `json:"abstract_time"`                                                                              //简介的切换时间

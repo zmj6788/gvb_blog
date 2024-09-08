@@ -146,6 +146,17 @@ definitions:
         description: 提示信息
         type: string
     type: object
+  images_api.ImageResponse:
+    properties:
+      id:
+        type: integer
+      name:
+        description: 图片名称
+        type: string
+      path:
+        description: 图片路径
+        type: string
+    type: object
   images_api.ImageUpdateRequest:
     properties:
       id:
@@ -155,6 +166,96 @@ definitions:
     required:
     - id
     - name
+    type: object
+  menu_api.Banner:
+    properties:
+      id:
+        type: integer
+      path:
+        type: string
+    type: object
+  menu_api.ImageSort:
+    properties:
+      image_id:
+        type: integer
+      sort:
+        type: integer
+    type: object
+  menu_api.MenuNameResponse:
+    properties:
+      id:
+        type: integer
+      path:
+        type: string
+      title:
+        type: string
+    type: object
+  menu_api.MenuRequest:
+    properties:
+      abstract:
+        items:
+          type: string
+        type: array
+      abstract_time:
+        description: 切换的时间，单位秒
+        type: integer
+      banner_time:
+        description: 切换的时间，单位秒
+        type: integer
+      image_sort_list:
+        description: 具体图片的顺序
+        items:
+          $ref: '#/definitions/menu_api.ImageSort'
+        type: array
+      path:
+        type: string
+      slogan:
+        type: string
+      sort:
+        description: 菜单的序号
+        type: integer
+      title:
+        type: string
+    required:
+    - path
+    - sort
+    - title
+    type: object
+  menu_api.MenuResponse:
+    properties:
+      abstract:
+        description: 简介
+        items:
+          type: string
+        type: array
+      abstract_time:
+        description: 简介的切换时间
+        type: integer
+      banner_time:
+        description: 菜单图片的切换时间 为0 表示不切换
+        type: integer
+      banners:
+        items:
+          $ref: '#/definitions/menu_api.Banner'
+        type: array
+      created_at:
+        description: 创建时间
+        type: string
+      id:
+        description: 主键ID
+        type: integer
+      path:
+        description: 菜单标题
+        type: string
+      slogan:
+        description: 简介
+        type: string
+      sort:
+        description: 菜单的顺序
+        type: integer
+      title:
+        description: 菜单标题
+        type: string
     type: object
   models.AdvertModel:
     properties:
@@ -355,6 +456,26 @@ paths:
       summary: 更新广告
       tags:
       - 广告管理
+  /api/image_names:
+    get:
+      description: 图片名称列表
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/res.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/images_api.ImageResponse'
+                  type: array
+              type: object
+      summary: 图片名称列表
+      tags:
+      - 图片管理
   /api/images:
     delete:
       description: 批量删除图片
@@ -468,6 +589,100 @@ paths:
       summary: 更新图片
       tags:
       - 图片管理
+  /api/menu_names:
+    get:
+      description: 菜单名称列表
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/res.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/menu_api.MenuNameResponse'
+                  type: array
+              type: object
+      summary: 菜单名称列表
+      tags:
+      - 菜单管理
+  /api/menus:
+    get:
+      description: 菜单列表
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/res.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/menu_api.MenuResponse'
+                  type: array
+              type: object
+      summary: 菜单列表
+      tags:
+      - 菜单管理
+    post:
+      description: 添加菜单
+      parameters:
+      - description: 表示多个参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/menu_api.MenuRequest'
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/res.Response'
+      summary: 添加菜单
+      tags:
+      - 菜单管理
+  /api/menus/{id}:
+    put:
+      description: 更新菜单
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 菜单的一些参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/menu_api.MenuRequest'
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/res.Response'
+      summary: 更新菜单
+      tags:
+      - 菜单管理
   /api/settings/{name}:
     get:
       description: 获取指定类型的配置信息
