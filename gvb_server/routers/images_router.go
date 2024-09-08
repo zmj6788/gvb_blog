@@ -18,4 +18,6 @@ func ImagesRouter(router *gin.RouterGroup) {
 	//使得可以通过如下方式访问图片资源，前提路径完整
 	//http://localhost:8080/api/uploads/file/1.jpg
 	router.Static("/uploads/file", "./uploads/file")
+	//http://localhost:8080/api/uploads/avatar/3.webp
+	router.Static("/uploads/avatar", "./uploads/avatar")
 }
