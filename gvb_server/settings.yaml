@@ -42,8 +42,8 @@ email:
   use_tls: false
 jwt:
   secret: xxx
-  expires: 48
-  issuer: xx
+  expires: 2
+  issuer: zmj
 qi_niu:
   enable: true
   access_key: UZOwq0yrXuFt03vI-Be6C80h2Zvg-yNyXa0jEQ0T
