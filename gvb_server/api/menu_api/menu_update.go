@@ -13,7 +13,6 @@ import (
 // MenuUpdateView 更新菜单
 // @Tags 菜单管理
 // @Summary 更新菜单
-// @Param token header string  true  "token"
 // @Description 更新菜单
 // @Param data body MenuRequest    true  "菜单的一些参数"
 // @Param id path int true "id"

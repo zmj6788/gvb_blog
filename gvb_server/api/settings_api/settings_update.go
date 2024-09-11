@@ -9,21 +9,21 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 )
+
+
 // SettingsInfoUpdateView 更新配置信息
 // @Tags 系统管理
 // @Summary 更新配置信息
-// @Description 更新配置信息
+// @Description 更新配置信息，例如更新站点信息、邮件配置、JWT设置等。
 // @ID update-settings-info
-// @Param name path string true "配置类型名称"
-// @Param data body config.SiteInfo false "站点信息配置"
-// @Param data body config.Email false "邮箱配置"
-// @Param data body config.Jwt false "JWT 配置"
-// @Param data body config.QiNiu false "七牛云配置"
-// @Param data body config.QQ false "QQ 配置"
-// @Param data body config.Upload false "上传配置"
+// @Param name path string true "配置类型名称" example("siteinfo", "email", "jwt", "qiniu", "qq", "upload")
+// @Param data body config.UpdateConfigRequest true "上传配置" 
 // @Router /api/settings/{name} [put]
 // @Produce json
-// @Success 200 {object} res.Response{}
+// @Success 200 {object} res.Response{message=string}
+// @Failure 400 {object} res.Response{message=string}
+// @Failure 500 {object} res.Response{message=string}
+// @Failure 404 {object} res.Response{message=string}
 func (SettingsApi) SettingsInfoUpdateView(c *gin.Context) {
 	name := c.Param("name")
 	switch name {

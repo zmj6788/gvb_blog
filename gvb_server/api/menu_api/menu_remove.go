@@ -14,7 +14,6 @@ import (
 // @Tags 菜单管理
 // @Summary 批量删除菜单
 // @Description 批量删除菜单
-// @Param token header string  true  "token"
 // @Param data body models.RemoveRequest    true  "菜单id列表"
 // @Router /api/menus [delete]
 // @Produce json

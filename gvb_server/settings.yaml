@@ -45,7 +45,7 @@ jwt:
   expires: 2
   issuer: zmj
 qi_niu:
-  enable: true
+  enable: false
   access_key: UZOwq0yrXuFt03vI-Be6C80h2Zvg-yNyXa0jEQ0T
   secret_key: ToRD6VYNiBngPULYrnE4_tq0zhxCu1DUM0WtZ8Wp
   bucket: zmj99

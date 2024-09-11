@@ -116,6 +116,21 @@ definitions:
       wechat_image:
         type: string
     type: object
+  config.UpdateConfigRequest:
+    properties:
+      email:
+        $ref: '#/definitions/config.Email'
+      jwt:
+        $ref: '#/definitions/config.Jwt'
+      qiniu:
+        $ref: '#/definitions/config.QiNiu'
+      qq:
+        $ref: '#/definitions/config.QQ'
+      siteinfo:
+        $ref: '#/definitions/config.SiteInfo'
+      upload:
+        $ref: '#/definitions/config.Upload'
+    type: object
   config.Upload:
     properties:
       path:
@@ -134,6 +149,37 @@ definitions:
     x-enum-varnames:
     - Local
     - QiNiu
+  ctype.Role:
+    enum:
+    - 1
+    - 2
+    - 3
+    - 4
+    type: integer
+    x-enum-comments:
+      PermissionAdmin: 管理员
+      PermissionDisableUser: 封禁的用户
+      PermissionUser: 普通用户
+      PermissionVisitor: 游客
+    x-enum-varnames:
+    - PermissionAdmin
+    - PermissionUser
+    - PermissionVisitor
+    - PermissionDisableUser
+  ctype.SignStatus:
+    enum:
+    - 1
+    - 2
+    - 3
+    type: integer
+    x-enum-comments:
+      SignEmail: 注册来源邮箱
+      SignGitee: 注册来源Gitee
+      SignQQ: 注册来源QQ
+    x-enum-varnames:
+    - SignQQ
+    - SignGitee
+    - SignEmail
   images_api.FileUploadResponse:
     properties:
       file_name:
@@ -307,6 +353,50 @@ definitions:
           type: integer
         type: array
     type: object
+  models.UserModel:
+    properties:
+      addr:
+        description: 地址
+        type: string
+      avatar_id:
+        description: 头像id
+        type: string
+      created_at:
+        description: 创建时间
+        type: string
+      email:
+        description: 邮箱
+        type: string
+      id:
+        description: 主键ID
+        type: integer
+      ip:
+        description: ip
+        type: string
+      nick_name:
+        description: 昵称
+        type: string
+      password:
+        description: 密码
+        type: string
+      role:
+        allOf:
+        - $ref: '#/definitions/ctype.Role'
+        description: 权限 1管理员 2普通用户 3游客 4封禁
+      sign_status:
+        allOf:
+        - $ref: '#/definitions/ctype.SignStatus'
+        description: 注册来源
+      tel:
+        description: 手机号
+        type: string
+      token:
+        description: token其他平台的唯一验证id
+        type: string
+      user_name:
+        description: 用户名
+        type: string
+    type: object
   res.ListResponse-images_api_FileUploadResponse:
     properties:
       count:
@@ -328,6 +418,13 @@ definitions:
       list:
         $ref: '#/definitions/models.BannerModel'
     type: object
+  res.ListResponse-models_UserModel:
+    properties:
+      count:
+        type: integer
+      list:
+        $ref: '#/definitions/models.UserModel'
+    type: object
   res.Response:
     properties:
       code:
@@ -335,6 +432,16 @@ definitions:
       data: {}
       msg:
         type: string
+    type: object
+  user_api.EmailLoginRequest:
+    properties:
+      password:
+        type: string
+      user_name:
+        type: string
+    required:
+    - password
+    - user_name
     type: object
 host: 127.0.0.1:8080
 info:
@@ -456,6 +563,26 @@ paths:
       summary: 更新广告
       tags:
       - 广告管理
+  /api/email_login:
+    post:
+      description: 邮箱登录
+      parameters:
+      - description: 表示多个参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/user_api.EmailLoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/res.Response'
+      summary: 邮箱登录
+      tags:
+      - 用户管理
   /api/image_names:
     get:
       description: 图片名称列表
@@ -613,11 +740,6 @@ paths:
     delete:
       description: 批量删除菜单
       parameters:
-      - description: token
-        in: header
-        name: token
-        required: true
-        type: string
       - description: 菜单id列表
         in: body
         name: data
@@ -704,11 +826,6 @@ paths:
     put:
       description: 更新菜单
       parameters:
-      - description: token
-        in: header
-        name: token
-        required: true
-        type: string
       - description: 菜单的一些参数
         in: body
         name: data
@@ -751,52 +868,101 @@ paths:
       tags:
       - 系统管理
     put:
-      description: 更新配置信息
+      description: 更新配置信息，例如更新站点信息、邮件配置、JWT设置等。
       operationId: update-settings-info
       parameters:
       - description: 配置类型名称
+        example: '"siteinfo", "email", "jwt", "qiniu", "qq", "upload"'
         in: path
         name: name
         required: true
         type: string
-      - description: 站点信息配置
-        in: body
-        name: data
-        schema:
-          $ref: '#/definitions/config.SiteInfo'
-      - description: 邮箱配置
-        in: body
-        name: data
-        schema:
-          $ref: '#/definitions/config.Email'
-      - description: JWT 配置
-        in: body
-        name: data
-        schema:
-          $ref: '#/definitions/config.Jwt'
-      - description: 七牛云配置
-        in: body
-        name: data
-        schema:
-          $ref: '#/definitions/config.QiNiu'
-      - description: QQ 配置
-        in: body
-        name: data
-        schema:
-          $ref: '#/definitions/config.QQ'
       - description: 上传配置
         in: body
         name: data
+        required: true
         schema:
-          $ref: '#/definitions/config.Upload'
+          $ref: '#/definitions/config.UpdateConfigRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/res.Response'
+            allOf:
+            - $ref: '#/definitions/res.Response'
+            - properties:
+                message:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/res.Response'
+            - properties:
+                message:
+                  type: string
+              type: object
+        "404":
+          description: Not Found
+          schema:
+            allOf:
+            - $ref: '#/definitions/res.Response'
+            - properties:
+                message:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/res.Response'
+            - properties:
+                message:
+                  type: string
+              type: object
       summary: 更新配置信息
       tags:
       - 系统管理
+  /api/users:
+    get:
+      description: 用户列表
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 搜索关键字
+        in: query
+        name: key
+        type: string
+      - description: 每页显示多少条
+        in: query
+        name: limit
+        type: integer
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 排序
+        in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/res.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/res.ListResponse-models_UserModel'
+              type: object
+      summary: 用户列表
+      tags:
+      - 用户管理
 swagger: "2.0"

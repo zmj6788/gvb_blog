@@ -191,6 +191,37 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/email_login": {
+            "post": {
+                "description": "邮箱登录",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户管理"
+                ],
+                "summary": "邮箱登录",
+                "parameters": [
+                    {
+                        "description": "表示多个参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user_api.EmailLoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/res.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/image_names": {
             "get": {
                 "description": "图片名称列表",
@@ -521,13 +552,6 @@ const docTemplate = `{
                 "summary": "批量删除菜单",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "token",
-                        "name": "token",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
                         "description": "菜单id列表",
                         "name": "data",
                         "in": "body",
@@ -598,13 +622,6 @@ const docTemplate = `{
                 "summary": "更新菜单",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "token",
-                        "name": "token",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
                         "description": "菜单的一些参数",
                         "name": "data",
                         "in": "body",
@@ -661,7 +678,7 @@ const docTemplate = `{
                 }
             },
             "put": {
-                "description": "更新配置信息",
+                "description": "更新配置信息，例如更新站点信息、邮件配置、JWT设置等。",
                 "produces": [
                     "application/json"
                 ],
@@ -673,57 +690,19 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
+                        "example": "\"siteinfo\", \"email\", \"jwt\", \"qiniu\", \"qq\", \"upload\"",
                         "description": "配置类型名称",
                         "name": "name",
                         "in": "path",
                         "required": true
                     },
                     {
-                        "description": "站点信息配置",
-                        "name": "data",
-                        "in": "body",
-                        "schema": {
-                            "$ref": "#/definitions/config.SiteInfo"
-                        }
-                    },
-                    {
-                        "description": "邮箱配置",
-                        "name": "data",
-                        "in": "body",
-                        "schema": {
-                            "$ref": "#/definitions/config.Email"
-                        }
-                    },
-                    {
-                        "description": "JWT 配置",
-                        "name": "data",
-                        "in": "body",
-                        "schema": {
-                            "$ref": "#/definitions/config.Jwt"
-                        }
-                    },
-                    {
-                        "description": "七牛云配置",
-                        "name": "data",
-                        "in": "body",
-                        "schema": {
-                            "$ref": "#/definitions/config.QiNiu"
-                        }
-                    },
-                    {
-                        "description": "QQ 配置",
-                        "name": "data",
-                        "in": "body",
-                        "schema": {
-                            "$ref": "#/definitions/config.QQ"
-                        }
-                    },
-                    {
                         "description": "上传配置",
                         "name": "data",
                         "in": "body",
+                        "required": true,
                         "schema": {
-                            "$ref": "#/definitions/config.Upload"
+                            "$ref": "#/definitions/config.UpdateConfigRequest"
                         }
                     }
                 ],
@@ -731,7 +710,138 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/res.Response"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/res.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/res.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/res.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/res.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users": {
+            "get": {
+                "description": "用户列表",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户管理"
+                ],
+                "summary": "用户列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "搜索关键字",
+                        "name": "key",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页显示多少条",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "排序",
+                        "name": "sort",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/res.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/res.ListResponse-models_UserModel"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     }
                 }
@@ -907,6 +1017,29 @@ const docTemplate = `{
                 }
             }
         },
+        "config.UpdateConfigRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "$ref": "#/definitions/config.Email"
+                },
+                "jwt": {
+                    "$ref": "#/definitions/config.Jwt"
+                },
+                "qiniu": {
+                    "$ref": "#/definitions/config.QiNiu"
+                },
+                "qq": {
+                    "$ref": "#/definitions/config.QQ"
+                },
+                "siteinfo": {
+                    "$ref": "#/definitions/config.SiteInfo"
+                },
+                "upload": {
+                    "$ref": "#/definitions/config.Upload"
+                }
+            }
+        },
         "config.Upload": {
             "type": "object",
             "properties": {
@@ -931,6 +1064,45 @@ const docTemplate = `{
             "x-enum-varnames": [
                 "Local",
                 "QiNiu"
+            ]
+        },
+        "ctype.Role": {
+            "type": "integer",
+            "enum": [
+                1,
+                2,
+                3,
+                4
+            ],
+            "x-enum-comments": {
+                "PermissionAdmin": "管理员",
+                "PermissionDisableUser": "封禁的用户",
+                "PermissionUser": "普通用户",
+                "PermissionVisitor": "游客"
+            },
+            "x-enum-varnames": [
+                "PermissionAdmin",
+                "PermissionUser",
+                "PermissionVisitor",
+                "PermissionDisableUser"
+            ]
+        },
+        "ctype.SignStatus": {
+            "type": "integer",
+            "enum": [
+                1,
+                2,
+                3
+            ],
+            "x-enum-comments": {
+                "SignEmail": "注册来源邮箱",
+                "SignGitee": "注册来源Gitee",
+                "SignQQ": "注册来源QQ"
+            },
+            "x-enum-varnames": [
+                "SignQQ",
+                "SignGitee",
+                "SignEmail"
             ]
         },
         "images_api.FileUploadResponse": {
@@ -1184,6 +1356,71 @@ const docTemplate = `{
                 }
             }
         },
+        "models.UserModel": {
+            "type": "object",
+            "properties": {
+                "addr": {
+                    "description": "地址",
+                    "type": "string"
+                },
+                "avatar_id": {
+                    "description": "头像id",
+                    "type": "string"
+                },
+                "created_at": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "email": {
+                    "description": "邮箱",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "主键ID",
+                    "type": "integer"
+                },
+                "ip": {
+                    "description": "ip",
+                    "type": "string"
+                },
+                "nick_name": {
+                    "description": "昵称",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "密码",
+                    "type": "string"
+                },
+                "role": {
+                    "description": "权限 1管理员 2普通用户 3游客 4封禁",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/ctype.Role"
+                        }
+                    ]
+                },
+                "sign_status": {
+                    "description": "注册来源",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/ctype.SignStatus"
+                        }
+                    ]
+                },
+                "tel": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "token": {
+                    "description": "token其他平台的唯一验证id",
+                    "type": "string"
+                },
+                "user_name": {
+                    "description": "用户名",
+                    "type": "string"
+                }
+            }
+        },
         "res.ListResponse-images_api_FileUploadResponse": {
             "type": "object",
             "properties": {
@@ -1217,6 +1454,17 @@ const docTemplate = `{
                 }
             }
         },
+        "res.ListResponse-models_UserModel": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "list": {
+                    "$ref": "#/definitions/models.UserModel"
+                }
+            }
+        },
         "res.Response": {
             "type": "object",
             "properties": {
@@ -1225,6 +1473,21 @@ const docTemplate = `{
                 },
                 "data": {},
                 "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "user_api.EmailLoginRequest": {
+            "type": "object",
+            "required": [
+                "password",
+                "user_name"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "user_name": {
                     "type": "string"
                 }
             }
