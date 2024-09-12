@@ -1,12 +1,15 @@
 package middleware
 
 import (
+	"gvb_server/global"
 	"gvb_server/models/ctype"
 	"gvb_server/models/res"
+	"gvb_server/untils"
 	"gvb_server/untils/jwts"
 
 	"github.com/gin-gonic/gin"
 )
+
 //使用中间件后的接口
 //可以理解为只有登录的用户才能调用绑定用户登录中间件的接口
 // 验证用户登录状态的中间件
@@ -24,6 +27,16 @@ func JwtAuth() gin.HandlerFunc {
 		claims, err := jwts.ParseToken(token)
 		if err != nil {
 			res.FailWithMessage("token错误", c)
+			c.Abort()
+			return
+		}
+
+		//验证token是否在redis注销列表token中
+		prefix := "logout_"
+		keys := global.Redis.Keys(prefix + "*").Val()
+		global.Log.Info(keys)
+		if untils.InList(prefix + token, keys) {
+			res.FailWithMessage("token已失效", c)
 			c.Abort()
 			return
 		}

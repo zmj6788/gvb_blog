@@ -741,6 +741,25 @@ paths:
       summary: 更新图片
       tags:
       - 图片管理
+  /api/logout:
+    post:
+      description: 用户注销
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/res.Response'
+      summary: 用户注销
+      tags:
+      - 用户管理
   /api/menu_names:
     get:
       description: 菜单名称列表
