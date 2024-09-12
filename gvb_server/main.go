@@ -19,6 +19,8 @@ func main() {
 	global.Log = core.InitLogger()
 	//数据库连接
 	global.DB = core.Initgorm()
+	//redis连接
+	global.Redis = core.ConnectRedis()
 	//命令行参数绑定迁移表结构函数
 	option := flag.Parse()
 	if flag.IsWebStop(option) {
