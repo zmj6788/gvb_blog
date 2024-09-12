@@ -2,6 +2,7 @@ package desens
 
 import "strings"
 
+//数据脱敏
 func DesensitizationEmail(email string) string {
 	// 256655@qq.com  2****@qq.com
 	// yaheb7479@yaho.com  y****@yaho.com

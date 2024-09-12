@@ -12,7 +12,7 @@ type UserModel struct {
 	Email          string           `gorm:"size:128" json:"email"`                                                             //邮箱
 	Tel            string           `gorm:"size:18" json:"tel"`                                                                //手机号
 	Addr           string           `gorm:"size:64" json:"addr"`                                                               //地址
-	Token          string           `gorm:"size:64" json:"token"`                                                              //token其他平台的唯一验证id
+	Token          string           `gorm:"size:648" json:"token"`                                                              //token其他平台的唯一验证id
 	IP             string           `gorm:"size:20" json:"ip"`                                                                 //ip
 	Role           ctype.Role       `gorm:"size:4;default:1" json:"role"`                                                      //权限 1管理员 2普通用户 3游客 4封禁
 	SignStatus     ctype.SignStatus `gorm:"type=smallint(6)" json:"sign_status"`                                               //注册来源

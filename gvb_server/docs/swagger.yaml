@@ -376,9 +376,6 @@ definitions:
       nick_name:
         description: 昵称
         type: string
-      password:
-        description: 密码
-        type: string
       role:
         allOf:
         - $ref: '#/definitions/ctype.Role'
@@ -442,6 +439,34 @@ definitions:
     required:
     - password
     - user_name
+    type: object
+  user_api.UpdatePasswordRequest:
+    properties:
+      old_pwd:
+        description: 旧密码
+        type: string
+      pwd:
+        description: 新密码
+        type: string
+    type: object
+  user_api.UserRole:
+    properties:
+      nick_name:
+        description: 防止用户昵称非法，管理员有能力修改
+        type: string
+      role:
+        allOf:
+        - $ref: '#/definitions/ctype.Role'
+        enum:
+        - 1
+        - 2
+        - 3
+        - 4
+      user_id:
+        type: integer
+    required:
+    - role
+    - user_id
     type: object
 host: 127.0.0.1:8080
 info:
@@ -925,6 +950,56 @@ paths:
       summary: 更新配置信息
       tags:
       - 系统管理
+  /api/user_pwd:
+    put:
+      description: 用户密码变更
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 用户的一些参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/user_api.UpdatePasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/res.Response'
+      summary: 用户密码变更
+      tags:
+      - 用户管理
+  /api/user_role:
+    put:
+      description: 用户权限变更,昵称变更
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 用户的一些参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/user_api.UserRole'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/res.Response'
+      summary: 用户权限变更,昵称变更
+      tags:
+      - 用户管理
   /api/users:
     get:
       description: 用户列表

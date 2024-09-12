@@ -10,5 +10,5 @@ func TestHashPwd(t *testing.T) {
 }
 
 func TestCheckPwd(t *testing.T) {
-	fmt.Println(CheckPwd("$2a$04$WSwsp/mW0iDzjE.fa9lUU.Ipxx9/m2S71zAXmmBQKgCFCDur0Kh9S", "zmj"))
+	fmt.Println(CheckPwd("$2a$04$TUpETNGGRDzD5FeH0tqzYO8UQSa/TBbe/8.4uHd5A0bHo7paeAvlO", ""))
 }

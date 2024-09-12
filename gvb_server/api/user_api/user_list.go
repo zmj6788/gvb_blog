@@ -21,24 +21,17 @@ import (
 // @Produce json
 // @Success 200 {object} res.Response{data=res.ListResponse[models.UserModel]}
 func (UserApi) UserListView(c *gin.Context) {
-	// 获取token
-	token := c.Request.Header.Get("token")
-	if token == "" {
-		res.FailWithMessage("未携带token", c)
-		return
-	}
-	// 解析token
-	claims, err := jwts.ParseToken(token)
-	if err != nil {
-		res.FailWithMessage("token解析错误", c)
-		return
-	}
+	//通过中间件拿到解析token后的用户信息
+
+	_claims,_ := c.Get("claims")
+	//将获取的值转换为 jwts.CustomClaims 类型，并存储在变量 claims 中
+	claims := _claims.(*jwts.CustomClaims)
 	// 不需要验证权限，在最终返回数据时，根据角色显示不同的数据
 
 	// 查询所有用户
 
 	var page models.PageInfo
-	err = c.ShouldBindQuery(&page)
+	err := c.ShouldBindQuery(&page)
 	if err != nil {
 		res.FailWithCode(res.ArgumentError, c)
 		return
