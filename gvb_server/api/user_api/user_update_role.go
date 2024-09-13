@@ -5,6 +5,8 @@ import (
 	"gvb_server/models"
 	"gvb_server/models/ctype"
 	"gvb_server/models/res"
+	"gvb_server/service"
+	"gvb_server/untils/jwts"
 
 	"github.com/gin-gonic/gin"
 )
@@ -45,5 +47,22 @@ func (UserApi) UserUpdateRoleView(c *gin.Context) {
 		res.FailWithMessage("修改权限失败", c)
 		return
 	}
+	//将用户当前token失效，使得用户强制重新登陆更新权限
+	token := user.Token
+	if token != "" {
+		//避免注册后从未登录的用户权限修改问题
+		claims, err := jwts.ParseToken(token)
+		if err != nil {
+			res.FailWithMessage("token错误", c)
+			c.Abort()
+			return
+		}
+		err = service.Services.UserService.Logout(claims, token)
+		if err != nil {
+			res.FailWithMessage("token注销失败", c)
+			return
+		}
+	}
+
 	res.OkWithMessage("修改权限成功", c)
 }

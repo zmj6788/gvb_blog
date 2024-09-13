@@ -54,6 +54,9 @@ func (UserApi) EmailLoginView(c *gin.Context) {
 		NickName: userModel.NickName,
 		Role:     int(userModel.Role),
 	})
+	//更新数据库token,使得管理员更新用户权限时可以获取到用户token使该token失效
+	//达到使用户强制重新登陆，更新用户权限的功能
+	global.DB.Model(&userModel).Update("token", token)
 	if err != nil {
 		global.Log.Error("生成token失败", err.Error())
 		res.FailWithMessage("生成token失败", c)

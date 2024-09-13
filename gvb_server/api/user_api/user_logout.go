@@ -1,57 +1,62 @@
 package user_api
 
 import (
-	"fmt"
 	"gvb_server/global"
 	"gvb_server/models"
 	"gvb_server/models/res"
+	"gvb_server/service"
+	"gvb_server/service/redis_service"
 	"gvb_server/untils/jwts"
-	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
-
-// UserLogoutView 用户注销
+// UserLogoutView 退出登录
 // @Tags 用户管理
-// @Summary 用户注销
-// @Description 用户注销，删除用户数据并将注销token放入Redis
+// @Summary 退出登录
+// @Description 退出登录
 // @Param token header string true "用户token"
 // @Success 200 {object} res.Response{}
 // @Failure 400 {object} res.Response{msg="注销token处理失败"}
-// @Failure 500 {object} res.Response{msg="用户数据清除失败"}
 // @Router /api/logout [post]
 func (UserApi) UserLogoutView(c *gin.Context) {
-	_claims, _ := c.Get("claims")
-	claims := _claims.(*jwts.CustomClaims)
 
-	//claims.ExpiresAt token的过期时间
-	fmt.Println(claims.ExpiresAt)
-	//计算距离过期的剩余时间
-	exp := claims.ExpiresAt
-	now := time.Now()
-
-	diff := exp.Time.Sub(now)
-
-	fmt.Println(diff)
 	//将注销用户的token放入redis中
-	prefix := "logout_"
 	token := c.Request.Header.Get("token")
-	err := global.Redis.Set(prefix+token, "", diff).Err()
-	if err != nil {
-		global.Log.Error(err.Error())
-		res.FailWithMessage("注销token处理失败", c)
-		return
-	}
-	// 清空用户数据
-	var user models.UserModel
-	err = global.DB.Take(&user, claims.UserID).Delete(&user).Error
-	if err != nil {
-		global.Log.Error(err.Error())
-		res.FailWithMessage("用户数据清除失败", c)
+	if token == "" {
+		res.FailWithMessage("token不存在", c)
 		return
 	}
 
-	res.OkWithMessage("注销成功", c)
+	claims, err := jwts.ParseToken(token)
+	if err != nil {
+		res.FailWithMessage("token错误", c)
+		c.Abort()
+		return
+	}
+	//退出登录使用双重验证
+	//验证token是否在redis注销列表token中，如果在，两种情况
+	//用户被更改权限，管理员强制重新登陆，or，用户已退出登录，token失效
+	//验证mysql中该用户的token是否存在于redis中，仍应该可以退出登录
+	var user models.UserModel
+	err = global.DB.Take(&user, claims.UserID).Error
+	if err != nil {
+		res.FailWithMessage("用户不存在", c)
+		return
+	}
+	err = service.Services.UserService.Logout(claims, token)
+	if err != nil {
+		global.Log.Error(err.Error())
+		res.FailWithMessage("token处理失败", c)
+		return
+	}
+	token_mysql:= user.Token
+	//分析：情况分为，权限更改后，用户退出，权限未更改，用户退出
+	if !redis_service.CheckLogout(token_mysql) || token_mysql != token {
+		res.FailWithMessage("请手动退出登录", c)
+		return
+	}
+
+	res.OkWithMessage("退出成功", c)
 
 }

@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "9.用户管理/用户注销.md",
+                "file": "bug.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "9.用户管理/用户注销.md",
+                "file": "bug.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "9.用户管理/用户注销.md",
+                "file": "bug.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "9.用户管理/用户注销.md"
+                "file": "bug.md"
               }
             }
           }
@@ -148,11 +148,11 @@
   },
   "active": "b56e002c78c6b2a2",
   "lastOpenFiles": [
+    "9.用户管理/用户退出登录.md",
+    "bug.md",
     "2.表结构搭建/00-目录结构.md",
     "1.后端项目创建/01-配置文件读取.md",
     "1.后端项目创建/00-项目结构.md",
-    "9.用户管理/用户注销.md",
-    "bug.md",
     "4.图片相关api/1.图片上传api/02-上传图片保存.md",
     "9.用户管理",
     "8.菜单管理",

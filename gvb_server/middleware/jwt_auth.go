@@ -1,17 +1,16 @@
 package middleware
 
 import (
-	"gvb_server/global"
 	"gvb_server/models/ctype"
 	"gvb_server/models/res"
-	"gvb_server/untils"
+	"gvb_server/service/redis_service"
 	"gvb_server/untils/jwts"
 
 	"github.com/gin-gonic/gin"
 )
 
-//使用中间件后的接口
-//可以理解为只有登录的用户才能调用绑定用户登录中间件的接口
+// 使用中间件后的接口
+// 可以理解为只有登录的用户才能调用绑定用户登录中间件的接口
 // 验证用户登录状态的中间件
 func JwtAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -23,7 +22,7 @@ func JwtAuth() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-		
+
 		claims, err := jwts.ParseToken(token)
 		if err != nil {
 			res.FailWithMessage("token错误", c)
@@ -32,11 +31,8 @@ func JwtAuth() gin.HandlerFunc {
 		}
 
 		//验证token是否在redis注销列表token中
-		prefix := "logout_"
-		keys := global.Redis.Keys(prefix + "*").Val()
-		global.Log.Info(keys)
-		if untils.InList(prefix + token, keys) {
-			res.FailWithMessage("token已失效", c)
+		if redis_service.CheckLogout(token) {
+			res.FailWithMessage("请重新登录", c)
 			c.Abort()
 			return
 		}
@@ -46,8 +42,8 @@ func JwtAuth() gin.HandlerFunc {
 	}
 }
 
-//只有登录的用户是管理员才能调用绑定管理员登录中间件的接口
-//管理员使用的验证登陆状态的中间件
+// 只有登录的用户是管理员才能调用绑定管理员登录中间件的接口
+// 管理员使用的验证登陆状态的中间件
 func JwtAdmin() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.Request.Header.Get("token")
@@ -63,12 +59,18 @@ func JwtAdmin() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-
+		//验证token是否在redis注销列表token中
+		if redis_service.CheckLogout(token) {
+			res.FailWithMessage("请重新登录", c)
+			c.Abort()
+			return
+		}
 		if claims.Role != int(ctype.PermissionAdmin) {
 			res.FailWithMessage("权限不足", c)
 			c.Abort()
 			return
 		}
+
 		//验证成功
 		//已经登陆的用户
 		c.Set("claims", claims)
