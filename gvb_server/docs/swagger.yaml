@@ -743,21 +743,19 @@ paths:
       - 图片管理
   /api/logout:
     post:
-      description: 用户注销
+      description: 退出登录
       parameters:
-      - description: token
+      - description: 用户token
         in: header
         name: token
         required: true
         type: string
-      produces:
-      - application/json
       responses:
         "200":
           description: OK
           schema:
             $ref: '#/definitions/res.Response'
-      summary: 用户注销
+      summary: 退出登录
       tags:
       - 用户管理
   /api/menu_names:
@@ -1020,6 +1018,30 @@ paths:
       tags:
       - 用户管理
   /api/users:
+    delete:
+      description: 批量删除用户
+      parameters:
+      - description: 用户token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 用户id列表
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.RemoveRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/res.Response'
+      summary: 批量删除用户
+      tags:
+      - 用户管理
     get:
       description: 用户列表
       parameters:

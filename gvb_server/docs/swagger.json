@@ -431,18 +431,15 @@
         },
         "/api/logout": {
             "post": {
-                "description": "用户注销",
-                "produces": [
-                    "application/json"
-                ],
+                "description": "退出登录",
                 "tags": [
                     "用户管理"
                 ],
-                "summary": "用户注销",
+                "summary": "退出登录",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "token",
+                        "description": "用户token",
                         "name": "token",
                         "in": "header",
                         "required": true
@@ -940,6 +937,42 @@
                                     }
                                 }
                             ]
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "批量删除用户",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户管理"
+                ],
+                "summary": "批量删除用户",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "用户token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "用户id列表",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.RemoveRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/res.Response"
                         }
                     }
                 }

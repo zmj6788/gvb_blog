@@ -16,9 +16,8 @@ import (
 // @Summary 退出登录
 // @Description 退出登录
 // @Param token header string true "用户token"
-// @Success 200 {object} res.Response{}
-// @Failure 400 {object} res.Response{msg="注销token处理失败"}
 // @Router /api/logout [post]
+// @Success 200 {object} res.Response{}
 func (UserApi) UserLogoutView(c *gin.Context) {
 
 	//将注销用户的token放入redis中

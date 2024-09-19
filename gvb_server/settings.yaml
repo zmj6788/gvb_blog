@@ -19,12 +19,12 @@ logger:
 site_info:
   created_at: "2024-04-23"
   bei_an: 暂无备案
-  title: 张明杰的个人博客
+  title: 所悟皆是空的个人博客
   qq_image: https://image.baidu.com/search/albumsdetail?tn=albumsdetail&word=%E5%AE%A0%E7%89%A9%E5%9B%BE%E7%89%87&fr=albumslist&album_tab=%E5%8A%A8%E7%89%A9&album_id=688&rn=30
   version: v1.0.0
   email: 2124427385@qq.com
   wechat_image: https://image.baidu.com/search/albumsdetail?tn=albumsdetail&word=%E6%B8%90%E5%8F%98%E9%A3%8E%E6%A0%BC%E6%8F%92%E7%94%BB&fr=albumslist&album_tab=%E8%AE%BE%E8%AE%A1%E7%B4%A0%E6%9D%90&album_id=409&rn=30
-  name: zmj
+  name: 所悟皆是空
   job: 后端开发
   addr: 河南郑州
   slogan: mj_blog
@@ -35,15 +35,15 @@ site_info:
 email:
   host: smtp.qq.com
   port: 465
-  user: xxx@qq.com
-  password: xxx
-  default_from_email: 枫枫知道
+  user: 2124427385@qq.com
+  password: vvkrsrdkdoepdjjb
+  default_from_email: 所悟皆是空
   use_ssl: false
   use_tls: false
 jwt:
   secret: xxx
   expires: 2
-  issuer: zmj
+  issuer: 所悟皆是空
 qi_niu:
   enable: false
   access_key: UZOwq0yrXuFt03vI-Be6C80h2Zvg-yNyXa0jEQ0T

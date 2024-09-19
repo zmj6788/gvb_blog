@@ -28,5 +28,29 @@ router.POST("/logout",middleware.JwtAuth(),userApis.UserLogoutView)
 ## 解决方法：退出登录接口不使用中间件
 
 
-# 3.
+# 3.用户删除接口无法正常调用
 
+## 错误提示：
+
+```
+Error 1205 (HY000): Lock wait timeout exceeded; try restarting transaction
+```
+## 对应接口：
+
+```
+router.DELETE("/users",middleware.JwtAdmin(),userApis.UserRemoveView)
+```
+
+## 解决方法：
+
+[杀掉线程](https://blog.csdn.net/herry16354/article/details/141224846?spm=1001.2101.3001.6650.4&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EYuanLiJiHua%7EPosition-4-141224846-blog-76186661.235%5Ev43%5Epc_blog_bottom_relevance_base1&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EYuanLiJiHua%7EPosition-4-141224846-blog-76186661.235%5Ev43%5Epc_blog_bottom_relevance_base1&utm_relevant_index=6)
+
+```
+
+//查询未提交事务,查到一个一直没有提交的只读事务（trx_state=”[LOCK]WAIT”）
+//找到对应线程kill 它
+SELECT * FROM information_schema.INNODB_TRX;
+
+//kill 线程ID。线程id为表中的trx_mysql_thread_id字段。
+kill 8; 
+```

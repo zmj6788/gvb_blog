@@ -17,4 +17,5 @@ func UserRouter(router *gin.RouterGroup) {
 	router.POST("/logout",userApis.UserLogoutView)
 	//管理员才能修改用户权限
 	router.PUT("/user_role",middleware.JwtAdmin(),userApis.UserUpdateRoleView)
+	router.DELETE("/users",middleware.JwtAdmin(),userApis.UserRemoveView)
 }
