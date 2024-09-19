@@ -5,7 +5,7 @@ import (
 	"encoding/hex"
 )
 
-// MD5加密函数
+// MD5加密函数,在项目中用于加密图片文件信息
 func MD5(bytedata []byte) string {
 	m := md5.New()
 	m.Write(bytedata)
