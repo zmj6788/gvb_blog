@@ -22,7 +22,7 @@ func UserRouter(router *gin.RouterGroup) {
 	router.GET("/users", middleware.JwtAuth(), userApis.UserListView)
 	router.PUT("/user_pwd", middleware.JwtAuth(), userApis.UserUpdatePasswordView)
 	router.POST("/user_bind_email", middleware.JwtAuth(), userApis.UserBindEmailView)
-	router.POST("/logout", userApis.UserLogoutView)
+	router.POST("/logout", middleware.JwtAuth(),userApis.UserLogoutView)
 	//管理员才能修改用户权限
 	router.PUT("/user_role", middleware.JwtAdmin(), userApis.UserUpdateRoleView)
 	router.DELETE("/users", middleware.JwtAdmin(), userApis.UserRemoveView)

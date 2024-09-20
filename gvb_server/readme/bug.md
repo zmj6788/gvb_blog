@@ -54,3 +54,23 @@ SELECT * FROM information_schema.INNODB_TRX;
 //kill 线程ID。线程id为表中的trx_mysql_thread_id字段。
 kill 8; 
 ```
+
+# 4.用户绑定邮箱接口bug
+
+## 使用过的验证码在有效期内，设备可以重复绑定
+
+## 对应接口：
+
+```
+router.POST("/user_bind_email", middleware.JwtAuth(), userApis.UserBindEmailView)
+```
+
+## 解决方法：
+
+redis 存储这个验证码，设置有效时间，在该接口函数中加入判断，如果redis中存在这个验证码，返回响应，请勿重复是使用验证码绑定邮箱
+
+```
+
+```
+
+# 5.

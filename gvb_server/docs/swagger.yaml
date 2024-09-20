@@ -430,6 +430,17 @@ definitions:
       msg:
         type: string
     type: object
+  user_api.BindEmailRequest:
+    properties:
+      code:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    type: object
   user_api.EmailLoginRequest:
     properties:
       password:
@@ -967,6 +978,31 @@ paths:
       summary: 更新配置信息
       tags:
       - 系统管理
+  /api/user_bind_email:
+    post:
+      description: 用户绑定邮箱
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 用户的一些参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/user_api.BindEmailRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/res.Response'
+      summary: 用户绑定邮箱
+      tags:
+      - 用户管理
   /api/user_pwd:
     put:
       description: 用户密码变更
