@@ -73,4 +73,14 @@ redis 存储这个验证码，设置有效时间，在该接口函数中加入�
 
 ```
 
-# 5.
+# 5.用户绑定邮箱接口bug
+
+## 第一次提交直接提交邮箱验证码，密码，由于session中没有验证数据，导致报错
+
+## 对应接口：
+
+```
+router.POST("/user_bind_email", middleware.JwtAuth(), userApis.UserBindEmailView)
+```
+
+## 解决方法：前端解决呗，后端不管这事儿
