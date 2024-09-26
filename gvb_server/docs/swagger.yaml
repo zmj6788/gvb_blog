@@ -353,6 +353,18 @@ definitions:
           type: integer
         type: array
     type: object
+  models.TagModel:
+    properties:
+      created_at:
+        description: 创建时间
+        type: string
+      id:
+        description: 主键ID
+        type: integer
+      title:
+        description: 标签名
+        type: string
+    type: object
   models.UserModel:
     properties:
       addr:
@@ -415,6 +427,13 @@ definitions:
       list:
         $ref: '#/definitions/models.BannerModel'
     type: object
+  res.ListResponse-models_TagModel:
+    properties:
+      count:
+        type: integer
+      list:
+        $ref: '#/definitions/models.TagModel'
+    type: object
   res.ListResponse-models_UserModel:
     properties:
       count:
@@ -429,6 +448,14 @@ definitions:
       data: {}
       msg:
         type: string
+    type: object
+  tag_api.TagRequest:
+    properties:
+      title:
+        description: 标签名
+        type: string
+    required:
+    - title
     type: object
   user_api.BindEmailRequest:
     properties:
@@ -459,6 +486,22 @@ definitions:
       pwd:
         description: 新密码
         type: string
+    type: object
+  user_api.UserCreateRequest:
+    properties:
+      nick_name:
+        type: string
+      password:
+        type: string
+      role:
+        $ref: '#/definitions/ctype.Role'
+      user_name:
+        type: string
+    required:
+    - nick_name
+    - password
+    - role
+    - user_name
     type: object
   user_api.UserRole:
     properties:
@@ -978,6 +1021,104 @@ paths:
       summary: 更新配置信息
       tags:
       - 系统管理
+  /api/tags:
+    delete:
+      description: 批量删除标签
+      parameters:
+      - description: 标签id列表
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.RemoveRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/res.Response'
+      summary: 批量删除标签
+      tags:
+      - 标签管理
+    get:
+      description: 标签列表
+      parameters:
+      - description: 搜索关键字
+        in: query
+        name: key
+        type: string
+      - description: 每页显示多少条
+        in: query
+        name: limit
+        type: integer
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 排序
+        in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/res.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/res.ListResponse-models_TagModel'
+              type: object
+      summary: 标签列表
+      tags:
+      - 标签管理
+    post:
+      description: 添加标签
+      parameters:
+      - description: 表示多个参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/tag_api.TagRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/res.Response'
+      summary: 添加标签
+      tags:
+      - 标签管理
+  /api/tags/{id}:
+    put:
+      description: 更新标签
+      parameters:
+      - description: 标签的一些参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/tag_api.TagRequest'
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/res.Response'
+      summary: 更新标签
+      tags:
+      - 标签管理
   /api/user_bind_email:
     post:
       description: 用户绑定邮箱
@@ -1115,6 +1256,30 @@ paths:
                   $ref: '#/definitions/res.ListResponse-models_UserModel'
               type: object
       summary: 用户列表
+      tags:
+      - 用户管理
+    post:
+      description: 创建用户
+      parameters:
+      - description: 表示多个参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/user_api.UserCreateRequest'
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/res.Response'
+      summary: 创建用户
       tags:
       - 用户管理
 swagger: "2.0"

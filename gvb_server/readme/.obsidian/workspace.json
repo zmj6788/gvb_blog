@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "bug.md",
+                "file": "9.用户管理/用户删除接口无法正常调用.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "bug.md",
+                "file": "9.用户管理/用户删除接口无法正常调用.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "bug.md",
+                "file": "9.用户管理/用户删除接口无法正常调用.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "bug.md"
+                "file": "9.用户管理/用户删除接口无法正常调用.md"
               }
             }
           }
@@ -146,13 +146,16 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "286950b59c7085a9",
+  "active": "b56e002c78c6b2a2",
   "lastOpenFiles": [
-    "Pasted image 20240530103304.png",
-    "bug.md",
+    "10.标签管理/标签删除.md",
+    "10.标签管理/标签列表.md",
     "9.用户管理/用户删除接口无法正常调用.md",
-    "9.用户管理/未命名.md",
     "9.用户管理/用户退出登录.md",
+    "9.用户管理/qq登录流程.md",
+    "bug.md",
+    "10.标签管理",
+    "Pasted image 20240530103304.png",
     "2.表结构搭建/00-目录结构.md",
     "1.后端项目创建/01-配置文件读取.md",
     "1.后端项目创建/00-项目结构.md",
@@ -181,9 +184,7 @@
     "4.图片相关api/2.图片列表api/02-封装分页查询列表.md",
     "4.图片相关api/2.图片列表api/01-图片列表分页查询.md",
     "4.图片相关api/3.图片删除api",
-    "4.图片相关api/1.图片上传api/03-黑白名单.md",
     "4.图片相关api/2.图片列表api",
-    "4.图片相关api",
     "3.系统配置api/Pasted image 20240424100436.png",
     "2.表结构搭建/Pasted image 20240422183916.png",
     "1.后端项目创建/image.png",
