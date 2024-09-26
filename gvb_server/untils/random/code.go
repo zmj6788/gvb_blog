@@ -28,3 +28,4 @@ func GenerateRandomSecret(n int) (string, error) {
 	return base64.StdEncoding.EncodeToString(secret), nil
 }
 
+
