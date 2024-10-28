@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "9.用户管理/用户删除接口无法正常调用.md",
+                "file": "11.消息管理/用户消息列表接口.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "9.用户管理/用户删除接口无法正常调用.md",
+                "file": "11.消息管理/用户消息列表接口.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "9.用户管理/用户删除接口无法正常调用.md",
+                "file": "11.消息管理/用户消息列表接口.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "9.用户管理/用户删除接口无法正常调用.md"
+                "file": "11.消息管理/用户消息列表接口.md"
               }
             }
           }
@@ -148,11 +148,19 @@
   },
   "active": "b56e002c78c6b2a2",
   "lastOpenFiles": [
+    "Pasted image 20241028163554.png",
+    "11.消息管理/消息详情接口.md",
+    "Pasted image 20241028163506.png",
+    "Pasted image 20241028163244.png",
+    "11.消息管理/用户消息列表接口.md",
+    "Pasted image 20241028161529.png",
+    "9.用户管理/qq登录本地测试.md",
+    "11.消息管理",
+    "9.用户管理/qq登录流程.md",
     "10.标签管理/标签删除.md",
     "10.标签管理/标签列表.md",
     "9.用户管理/用户删除接口无法正常调用.md",
     "9.用户管理/用户退出登录.md",
-    "9.用户管理/qq登录流程.md",
     "bug.md",
     "10.标签管理",
     "Pasted image 20240530103304.png",
@@ -179,12 +187,7 @@
     "4.图片相关api/4.图片修改api",
     "4.图片相关api/3.图片删除api/00-图片删除相关目录.md",
     "4.图片相关api/3.图片删除api/01-图片批量删除.md",
-    "2.表结构搭建/03-表结构迁移.md",
-    "4.图片相关api/2.图片列表api/03-实现图片列表排序.md",
-    "4.图片相关api/2.图片列表api/02-封装分页查询列表.md",
-    "4.图片相关api/2.图片列表api/01-图片列表分页查询.md",
     "4.图片相关api/3.图片删除api",
-    "4.图片相关api/2.图片列表api",
     "3.系统配置api/Pasted image 20240424100436.png",
     "2.表结构搭建/Pasted image 20240422183916.png",
     "1.后端项目创建/image.png",

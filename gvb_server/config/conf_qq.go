@@ -14,3 +14,5 @@ func (q QQ) GetPath() string {
 	}
 	return fmt.Sprintf("https://graph.qq.com/oauth2.0/show?which=Login&display=pc&response_type=code&client_id=#{q.AppID}&redirect_url=#{q.Redirect}")
 }
+
+//https://graph.qq.com/oauth2.0/show?which=Login&display=pc&response_type=code&client_id=102383725&redirect_uri=https://4a72-123-52-105-92.ngrok-free.app/login?flag=qq

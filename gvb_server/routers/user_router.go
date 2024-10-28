@@ -19,7 +19,7 @@ func UserRouter(router *gin.RouterGroup) {
 	
 	// 邮箱登录就是邮箱或用户名登陆
 	router.POST("/email_login", userApis.EmailLoginView)
-	router.POST("/login", userApis.QQLoginView)
+	// router.POST("/login", userApis.QQLoginView)
 
 	//只有登录的用户才能调用用户信息列表
 	router.GET("/users", middleware.JwtAuth(), userApis.UserListView)

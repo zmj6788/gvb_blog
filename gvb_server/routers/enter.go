@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"gvb_server/api/user_api"
 	"gvb_server/global"
 
 	"github.com/gin-gonic/gin"
@@ -14,7 +15,7 @@ func InitRouter() *gin.Engine {
 	// swagger使用
 	router.GET("/swagger/*any", gs.WrapHandler(swaggerFiles.Handler))
 	// 测试qq登录接口
-	// router.GET("login", user_api.UserApi{}.QQLoginView)
+	router.GET("/login", user_api.UserApi{}.QQLoginView)
 	//如有需求在这里读取json错误码文件
 
 	routerGroup := router.Group("/api")
@@ -24,5 +25,6 @@ func InitRouter() *gin.Engine {
 	MenuRouter(routerGroup)
 	UserRouter(routerGroup)
 	TagRouter(routerGroup)
+	MessageRouter(routerGroup)
 	return router
 }

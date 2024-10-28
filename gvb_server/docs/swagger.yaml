@@ -303,6 +303,48 @@ definitions:
         description: 菜单标题
         type: string
     type: object
+  message_api.Message:
+    properties:
+      content:
+        description: 消息内容
+        type: string
+      created_at:
+        description: 最新的消息时间
+        type: string
+      message_count:
+        description: 消息条数
+        type: integer
+      rev_user_avatar:
+        type: string
+      rev_user_id:
+        description: 接收人id
+        type: integer
+      rev_user_nick_name:
+        type: string
+      send_user_avatar:
+        type: string
+      send_user_id:
+        description: 发送人id
+        type: integer
+      send_user_nick_name:
+        type: string
+    type: object
+  message_api.MessageCreateRequest:
+    properties:
+      content:
+        description: 消息内容
+        type: string
+      rev_user_id:
+        description: 接收者id
+        type: integer
+      send_user_id:
+        description: 发送者id
+        type: integer
+    required:
+    - content
+    - rev_user_id
+    - send_user_id
+    type: object
   models.AdvertModel:
     properties:
       created_at:
@@ -344,6 +386,35 @@ definitions:
         type: string
       path:
         description: 图片路径
+        type: string
+    type: object
+  models.MessageModel:
+    properties:
+      content:
+        description: 消息内容
+        type: string
+      created_at:
+        description: 创建时间
+        type: string
+      id:
+        description: 主键ID
+        type: integer
+      is_read:
+        description: 是否已读
+        type: boolean
+      rev_user_avatar:
+        type: string
+      rev_user_id:
+        description: 接收者id
+        type: integer
+      rev_user_nick_name:
+        type: string
+      send_user_avatar:
+        type: string
+      send_user_id:
+        description: 发送者id
+        type: integer
+      send_user_nick_name:
         type: string
     type: object
   models.RemoveRequest:
@@ -426,6 +497,13 @@ definitions:
         type: integer
       list:
         $ref: '#/definitions/models.BannerModel'
+    type: object
+  res.ListResponse-models_MessageModel:
+    properties:
+      count:
+        type: integer
+      list:
+        $ref: '#/definitions/models.MessageModel'
     type: object
   res.ListResponse-models_TagModel:
     properties:
@@ -943,6 +1021,96 @@ paths:
       summary: 更新菜单
       tags:
       - 菜单管理
+  /api/messages:
+    get:
+      description: 用户消息列表
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/res.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/message_api.Message'
+                  type: array
+              type: object
+      summary: 用户消息列表
+      tags:
+      - 消息管理
+    post:
+      description: 发布消息
+      parameters:
+      - description: 表示多个参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/message_api.MessageCreateRequest'
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/res.Response'
+      summary: 发布消息
+      tags:
+      - 消息管理
+  /api/messages_all:
+    get:
+      description: 管理员查看所有消息列表
+      parameters:
+      - description: 搜索关键字
+        in: query
+        name: key
+        type: string
+      - description: 每页显示多少条
+        in: query
+        name: limit
+        type: integer
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 排序
+        in: query
+        name: sort
+        type: string
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/res.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/res.ListResponse-models_MessageModel'
+              type: object
+      summary: 管理员查看所有消息列表
+      tags:
+      - 消息管理
   /api/settings/{name}:
     get:
       description: 获取指定类型的配置信息

@@ -53,9 +53,9 @@ qi_niu:
   zone: z2
   size: 5
 qq:
-  app_id: zmj
-  key: 芝麻开门
-  redirect: http://xx.xx.com/login?flag=qq
+  app_id: 102383725
+  key: Xx98tQjoePxJRL1S
+  redirect: https://4a72-123-52-105-92.ngrok-free.app/login?flag=qq
 upload:
   size: 5
   path: uploads/file/
