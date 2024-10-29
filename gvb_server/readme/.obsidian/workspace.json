@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "11.消息管理/用户消息列表接口.md",
+                "file": "12.es操作/es操作.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "11.消息管理/用户消息列表接口.md",
+                "file": "12.es操作/es操作.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "11.消息管理/用户消息列表接口.md",
+                "file": "12.es操作/es操作.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "11.消息管理/用户消息列表接口.md"
+                "file": "12.es操作/es操作.md"
               }
             }
           }
@@ -148,11 +148,18 @@
   },
   "active": "b56e002c78c6b2a2",
   "lastOpenFiles": [
+    "12.es操作/es搭建.md",
+    "12.es操作/es连接.md",
+    "12.es操作/es操作.md",
+    "bug.md",
+    "Pasted image 20241028170426.png",
+    "Pasted image 20241028170328.png",
+    "11.消息管理/用户消息列表接口.md",
+    "12.es操作",
     "Pasted image 20241028163554.png",
     "11.消息管理/消息详情接口.md",
     "Pasted image 20241028163506.png",
     "Pasted image 20241028163244.png",
-    "11.消息管理/用户消息列表接口.md",
     "Pasted image 20241028161529.png",
     "9.用户管理/qq登录本地测试.md",
     "11.消息管理",
@@ -161,7 +168,6 @@
     "10.标签管理/标签列表.md",
     "9.用户管理/用户删除接口无法正常调用.md",
     "9.用户管理/用户退出登录.md",
-    "bug.md",
     "10.标签管理",
     "Pasted image 20240530103304.png",
     "2.表结构搭建/00-目录结构.md",
@@ -185,15 +191,9 @@
     "4.图片相关api/杂小知识汇.md",
     "4.图片相关api/2.图片列表api/00-图片列表相关目录.md",
     "4.图片相关api/4.图片修改api",
-    "4.图片相关api/3.图片删除api/00-图片删除相关目录.md",
-    "4.图片相关api/3.图片删除api/01-图片批量删除.md",
-    "4.图片相关api/3.图片删除api",
     "3.系统配置api/Pasted image 20240424100436.png",
     "2.表结构搭建/Pasted image 20240422183916.png",
     "1.后端项目创建/image.png",
-    "Pasted image 20240422183834.png",
-    "img/Pasted image 20240422183603.png",
-    "2.表结构搭建/Pasted image 20240422183508.png",
     "未命名.canvas"
   ]
 }

@@ -345,6 +345,13 @@ definitions:
     - rev_user_id
     - send_user_id
     type: object
+  message_api.MessageRecordRequest:
+    properties:
+      user_id:
+        type: integer
+    required:
+    - user_id
+    type: object
   models.AdvertModel:
     properties:
       created_at:
@@ -1069,6 +1076,30 @@ paths:
           schema:
             $ref: '#/definitions/res.Response'
       summary: 发布消息
+      tags:
+      - 消息管理
+    put:
+      description: 消息详情
+      parameters:
+      - description: 菜单的一些参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/message_api.MessageRecordRequest'
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/res.Response'
+      summary: 消息详情
       tags:
       - 消息管理
   /api/messages_all:

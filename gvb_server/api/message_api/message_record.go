@@ -12,7 +12,15 @@ import (
 type MessageRecordRequest struct {
 	UserID uint `json:"user_id" binding:"required" msg:"请输入查询的用户id"`
 }
-
+// MessageRecordView 消息详情
+// @Tags 消息管理
+// @Summary 消息详情
+// @Description 消息详情
+// @Param data body MessageRecordRequest    true  "菜单的一些参数"
+// @Param token header string  true  "token"
+// @Router /api/messages [put]
+// @Produce json
+// @Success 200 {object} res.Response{}
 func (MessageApi) MessageRecordView(c *gin.Context) {
 	//聊天用户id
 	var cr MessageRecordRequest

@@ -717,6 +717,42 @@ const docTemplate = `{
                     }
                 }
             },
+            "put": {
+                "description": "消息详情",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "消息管理"
+                ],
+                "summary": "消息详情",
+                "parameters": [
+                    {
+                        "description": "菜单的一些参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/message_api.MessageRecordRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/res.Response"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "发布消息",
                 "produces": [
@@ -1849,6 +1885,17 @@ const docTemplate = `{
                 },
                 "send_user_id": {
                     "description": "发送者id",
+                    "type": "integer"
+                }
+            }
+        },
+        "message_api.MessageRecordRequest": {
+            "type": "object",
+            "required": [
+                "user_id"
+            ],
+            "properties": {
+                "user_id": {
                     "type": "integer"
                 }
             }
