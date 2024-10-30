@@ -59,6 +59,7 @@ func (ArticleApi) ArticleCreateView(c *gin.Context) {
 	// 将markdown转为html
 	unsafe := blackfriday.MarkdownCommon([]byte(cr.Content))
 	// 是不是有script标签
+	// 从html中获取文本内容
 	doc, _ := goquery.NewDocumentFromReader(strings.NewReader(string(unsafe)))
 	//fmt.Println(doc.Text())
 	nodes := doc.Find("script").Nodes

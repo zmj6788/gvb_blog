@@ -13,6 +13,6 @@ func ArticleRouter(router *gin.RouterGroup) {
 	router.POST("/articles", middleware.JwtAuth(),ArticleApi.ArticleCreateView)
 	// router.DELETE("/articles", ArticleApi.AdvertRemoveView)
 	// router.PUT("/articles/:id", ArticleApi.AdvertUpdateView)
-	// router.GET("/articles", ArticleApi.AdvertListView)
+	router.GET("/articles", ArticleApi.ArticleListView)
 
 }

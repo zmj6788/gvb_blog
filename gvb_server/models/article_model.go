@@ -16,7 +16,7 @@ type ArticleModel struct {
 	UpdatedAt string `json:"updated_at"` // 更新时间
 
 	Title    string `json:"title"`              // 文章标题
-	Keyword  string `json:"keyword",omit(list)` //关键字
+	Keyword  string `json:"keyword",omit(list)` //关键字             omit排除，filter.Omit("list", list)
 	Abstract string `json:"abstract"`           // 文章简介
 	Content  string `json:"content,omit(list)"` // 文章内容
 
