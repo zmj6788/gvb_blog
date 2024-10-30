@@ -191,6 +191,44 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/articles": {
+            "post": {
+                "description": "发布文章",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文章管理"
+                ],
+                "summary": "发布文章",
+                "parameters": [
+                    {
+                        "description": "表示多个参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/article_api.ArticleRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/res.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/email_login": {
             "post": {
                 "description": "邮箱登录",
@@ -1418,6 +1456,50 @@ const docTemplate = `{
                 },
                 "title": {
                     "description": "广告标题",
+                    "type": "string"
+                }
+            }
+        },
+        "article_api.ArticleRequest": {
+            "type": "object",
+            "required": [
+                "content",
+                "title"
+            ],
+            "properties": {
+                "abstract": {
+                    "description": "文章简介",
+                    "type": "string"
+                },
+                "banner_id": {
+                    "description": "文章封面id",
+                    "type": "integer"
+                },
+                "category": {
+                    "description": "文章分类",
+                    "type": "string"
+                },
+                "content": {
+                    "description": "文章内容",
+                    "type": "string"
+                },
+                "link": {
+                    "description": "原文链接",
+                    "type": "string"
+                },
+                "source": {
+                    "description": "文章来源",
+                    "type": "string"
+                },
+                "tags": {
+                    "description": "文章标签",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "title": {
+                    "description": "文章标题",
                     "type": "string"
                 }
             }

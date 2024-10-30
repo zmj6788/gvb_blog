@@ -1,6 +1,8 @@
 module gvb_server
 
-go 1.22.2
+go 1.23
+
+toolchain go1.23.1
 
 require (
 	github.com/gin-gonic/gin v1.10.0
@@ -12,10 +14,13 @@ require (
 
 require (
 	github.com/BurntSushi/toml v1.3.2 // indirect
+	github.com/JohannesKaufmann/html-to-markdown v1.6.0 // indirect
 	github.com/KyleBanks/depth v1.2.1 // indirect
+	github.com/PuerkitoBio/goquery v1.10.0 // indirect
 	github.com/PuerkitoBio/purell v1.2.1 // indirect
 	github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 // indirect
 	github.com/alex-ant/gomath v0.0.0-20160516115720-89013a210a82 // indirect
+	github.com/andybalholm/cascadia v1.3.2 // indirect
 	github.com/bytedance/sonic v1.12.2 // indirect
 	github.com/bytedance/sonic/loader v0.2.0 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
@@ -56,6 +61,7 @@ require (
 	github.com/pelletier/go-toml/v2 v2.2.3 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/qiniu/go-sdk/v7 v7.21.0 // indirect
+	github.com/russross/blackfriday v1.6.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect
 	github.com/swaggo/files v1.0.1 // indirect
