@@ -14,5 +14,6 @@ func ArticleRouter(router *gin.RouterGroup) {
 	// router.DELETE("/articles", ArticleApi.AdvertRemoveView)
 	// router.PUT("/articles/:id", ArticleApi.AdvertUpdateView)
 	router.GET("/articles", ArticleApi.ArticleListView)
+	router.GET("/articles/:id", ArticleApi.ArticleDetailView)
 
 }
