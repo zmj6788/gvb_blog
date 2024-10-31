@@ -285,6 +285,35 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/articles/detail": {
+            "get": {
+                "description": "文章详情",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文章管理"
+                ],
+                "summary": "文章详情",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "title",
+                        "name": "title",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/res.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/articles/{id}": {
             "get": {
                 "description": "文章详情",

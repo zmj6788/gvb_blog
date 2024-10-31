@@ -3,6 +3,7 @@ package es_service
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"gvb_server/global"
 	"gvb_server/models"
 
@@ -55,11 +56,12 @@ func CommList(key string, page, limit int) (List []models.ArticleModel, count in
 		model.ID = hit.Id
 		List = append(List, model)
 	}
-	return List, count,err
+	return List, count, err
 }
 
+// id查询
 func CommDetail(id string) (model models.ArticleModel, err error) {
-	
+
 	res, err := global.ESClient.Get().
 		Index(models.ArticleModel{}.Index()).
 		Id(id).
@@ -73,5 +75,29 @@ func CommDetail(id string) (model models.ArticleModel, err error) {
 	}
 	err = json.Unmarshal(data, &model)
 	model.ID = res.Id
+	return
+}
+
+// 根据keyword查询
+func CommDetailByKeyword(key string) (model models.ArticleModel, err error) {
+
+	res, err := global.ESClient.Search().
+		Index(models.ArticleModel{}.Index()).
+		Query(elastic.NewTermQuery("keyword", key)).
+		Size(1).
+		Do(context.Background())
+	if err != nil {
+		return
+	}
+	if res.Hits.TotalHits.Value == 0 {
+		return model, errors.New("文章不存在")
+	}
+	hit := res.Hits.Hits[0]
+
+	err = json.Unmarshal(hit.Source, &model)
+	if err != nil {
+		return
+	}
+	model.ID = hit.Id
 	return
 }

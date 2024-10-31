@@ -37,3 +37,34 @@ func (ArticleApi) ArticleDetailView(c *gin.Context) {
 	res.OkWithData(model, c)
 
 }
+
+type ArticleDetailByTitleRequest struct {
+	Title string `json:"title" form:"title"`
+}
+
+// ArticleDetailByTitleView 文章详情
+// @Tags 文章管理
+// @Summary 文章详情
+// @Description 文章详情
+// @Router /api/articles/detail [get]
+// @Param title query string true "title"
+// @Produce json
+// @Success 200 {object} res.Response{}
+func (ArticleApi) ArticleDetailByTitleView(c *gin.Context) {
+
+	var cr ArticleDetailByTitleRequest
+	err := c.ShouldBindQuery(&cr)
+	if err != nil {
+		res.FailWithError(err, &cr, c)
+		return
+	}
+
+	model, err := es_service.CommDetailByKeyword(cr.Title)
+	if err != nil {
+		res.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	res.OkWithData(model, c)
+
+}

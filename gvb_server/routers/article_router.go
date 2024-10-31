@@ -15,5 +15,6 @@ func ArticleRouter(router *gin.RouterGroup) {
 	// router.PUT("/articles/:id", ArticleApi.AdvertUpdateView)
 	router.GET("/articles", ArticleApi.ArticleListView)
 	router.GET("/articles/:id", ArticleApi.ArticleDetailView)
+	router.GET("/articles/detail", ArticleApi.ArticleDetailByTitleView)
 
 }
