@@ -113,10 +113,13 @@ func (ArticleApi) ArticleCreateView(c *gin.Context) {
 		return
 	}
 	now := time.Now().Format("2006-01-02 15:04:05")
+	
+	
 	article := models.ArticleModel{
 		CreatedAt:    now,
 		UpdatedAt:    now,
 		Title:        cr.Title,
+		Keyword:      cr.Title,
 		Abstract:     cr.Abstract,
 		Content:      cr.Content,
 		UserID:       userID,
@@ -128,6 +131,16 @@ func (ArticleApi) ArticleCreateView(c *gin.Context) {
 		BannerID:     cr.BannerID,
 		BannerUrl:    bannerUrl,
 		Tags:         cr.Tags,
+	}
+	// 查询文章是否已经存在
+	// 将title多存储一份，改名为keyword
+	// "keyword": { 
+				// "type": "keyword"
+			// }
+			// 便于搜索
+	if article.ISExistData() {
+		res.FailWithMessage("文章已经存在", c)
+		return
 	}
 	
 	// 创建一条文章数据
