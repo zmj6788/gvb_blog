@@ -51,6 +51,13 @@ definitions:
     - content
     - title
     type: object
+  article_api.CalendarResponse:
+    properties:
+      count:
+        type: integer
+      date:
+        type: string
+    type: object
   config.Email:
     properties:
       default_from_email:
@@ -581,6 +588,13 @@ definitions:
         description: 用户名
         type: string
     type: object
+  res.ListResponse-article_api_CalendarResponse:
+    properties:
+      count:
+        type: integer
+      list:
+        $ref: '#/definitions/article_api.CalendarResponse'
+    type: object
   res.ListResponse-images_api_FileUploadResponse:
     properties:
       count:
@@ -907,6 +921,24 @@ paths:
           schema:
             $ref: '#/definitions/res.Response'
       summary: 文章详情
+      tags:
+      - 文章管理
+  /api/articles/calendar:
+    get:
+      description: 文章日历
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/res.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/res.ListResponse-article_api_CalendarResponse'
+              type: object
+      summary: 文章日历
       tags:
       - 文章管理
   /api/articles/detail:

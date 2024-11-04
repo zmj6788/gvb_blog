@@ -285,6 +285,38 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/articles/calendar": {
+            "get": {
+                "description": "文章日历",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文章管理"
+                ],
+                "summary": "文章日历",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/res.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/res.ListResponse-article_api_CalendarResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/api/articles/detail": {
             "get": {
                 "description": "文章详情",
@@ -1618,6 +1650,17 @@ const docTemplate = `{
                 }
             }
         },
+        "article_api.CalendarResponse": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "date": {
+                    "type": "string"
+                }
+            }
+        },
         "config.Email": {
             "type": "object",
             "properties": {
@@ -2373,6 +2416,17 @@ const docTemplate = `{
                 "user_name": {
                     "description": "用户名",
                     "type": "string"
+                }
+            }
+        },
+        "res.ListResponse-article_api_CalendarResponse": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "list": {
+                    "$ref": "#/definitions/article_api.CalendarResponse"
                 }
             }
         },
