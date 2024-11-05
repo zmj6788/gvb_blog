@@ -31,7 +31,15 @@ func (ArticleApi) ArticleListView(c *gin.Context) {
 		res.FailWithMessage("文章列表获取失败", c)
 		return
 	}
+	//json-filter空值问题解决
+	data := filter.Omit("list", list)
+	_list, _ := data.(filter.Filter)
+	if string(_list.MustMarshalJSON()) == "{}" {
+		list = make([]models.ArticleModel, 0)
+		res.OkWithList(list, count, c)
+		return
+	}
 	
 	//使用json-filter包，排除某些字段
-	res.OkWithList(filter.Omit("list", list), count, c)
+	res.OkWithList(data, count, c)
 }
