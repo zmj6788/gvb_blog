@@ -19,7 +19,7 @@ type CalendarResponse struct {
 
 var DateCount = map[string]int{}
 
-type JSONData struct {
+type CalendarJSONData struct {
 		Buckets []struct {
 			KeyAsString string `json:"key_as_string"`
 			Key int64 `json:"key"`
@@ -65,7 +65,7 @@ func (ArticleApi) ArticleCalendarView(c *gin.Context) {
 	}
 
 	//获取到一年的数据后解析到go结构体中
-	var jsonData JSONData
+	var jsonData CalendarJSONData
 	_ = json.Unmarshal(result.Aggregations["calendar"],&jsonData)
 
 	//将每天的数据存到map中，便于高效查询

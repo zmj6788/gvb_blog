@@ -16,8 +16,8 @@ type ArticleModel struct {
 	UpdatedAt string `json:"updated_at"` // 更新时间
 
 	Title    string `json:"title"`              // 文章标题
-	Keyword  string `json:"keyword,omit(list)"` //关键字             omit排除，filter.Omit("list", list)
-	Abstract string `json:"abstract"`           // 文章简介
+	Keyword  string `json:"keyword,omit(list)"` //关键字    存储时与文章标题相同，便于搜索         omit排除，filter.Omit("list", list)
+	Abstract string `json:"abstract"`           // 文章简介  如果不存在文章简介，截取文章内容的100字为简介
 	Content  string `json:"content,omit(list)"` // 文章内容
 
 	LookCount     int `json:"look_count"`     // 文章浏览量
