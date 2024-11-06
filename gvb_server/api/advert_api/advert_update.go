@@ -1,7 +1,6 @@
 package advert_api
 
 import (
-	"fmt"
 	"gvb_server/global"
 	"gvb_server/models"
 	"gvb_server/models/res"
@@ -9,7 +8,6 @@ import (
 	"github.com/fatih/structs"
 	"github.com/gin-gonic/gin"
 )
-
 
 // AdvertUpdateView 更新广告
 // @Tags 广告管理
@@ -37,9 +35,9 @@ func (*AdvertApi) AdvertUpdateView(c *gin.Context) {
 	}
 	// 结构体转map的第三方包
 	// 用map原因，让布尔值可以正常修改
-	// 删除binding:"required" msg:"请选择是否显示" 
+	// 删除binding:"required" msg:"请选择是否显示"
 	maps := structs.Map(&cr)
-	fmt.Println(maps)
+	// fmt.Println(maps)
 	err = global.DB.Model(&advert).Updates(maps).Error
 
 	if err != nil {

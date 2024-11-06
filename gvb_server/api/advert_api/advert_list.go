@@ -16,6 +16,7 @@ import (
 // @Summary 广告列表
 // @Description 广告列表
 // @Param data query models.PageInfo    false  "查询参数"
+// @Param token header string  true  "token"
 // @Router /api/adverts [get]
 // @Produce json
 // @Success 200 {object} res.Response{data=res.ListResponse[models.AdvertModel]}

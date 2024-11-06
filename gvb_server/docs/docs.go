@@ -50,6 +50,13 @@ const docTemplate = `{
                         "description": "排序",
                         "name": "sort",
                         "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1720,7 +1727,11 @@ const docTemplate = `{
                         "type": "string"
                     }
                 },
-                "tags": {
+                "created_at": {
+                    "description": "标签的创建时间",
+                    "type": "string"
+                },
+                "tag": {
                     "type": "string"
                 }
             }
