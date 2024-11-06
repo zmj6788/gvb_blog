@@ -346,6 +346,64 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/articles/tags": {
+            "get": {
+                "description": "文章标签列表",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文章管理"
+                ],
+                "summary": "文章标签列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "搜索关键字",
+                        "name": "key",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页显示多少条",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "排序",
+                        "name": "sort",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/res.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/res.ListResponse-article_api_ArticleTagResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/api/articles/{id}": {
             "get": {
                 "description": "文章详情",
@@ -1650,6 +1708,23 @@ const docTemplate = `{
                 }
             }
         },
+        "article_api.ArticleTagResponse": {
+            "type": "object",
+            "properties": {
+                "article_count": {
+                    "type": "integer"
+                },
+                "article_id_list": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "tags": {
+                    "type": "string"
+                }
+            }
+        },
         "article_api.CalendarResponse": {
             "type": "object",
             "properties": {
@@ -2172,7 +2247,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "abstract": {
-                    "description": "文章简介",
+                    "description": "文章简介  如果不存在文章简介，截取文章内容的100字为简介",
                     "type": "string"
                 },
                 "banner_id": {
@@ -2212,7 +2287,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "keyword": {
-                    "description": "关键字             omit排除，filter.Omit(\"list\", list)",
+                    "description": "关键字    存储时与文章标题相同，便于搜索         omit排除，filter.Omit(\"list\", list)",
                     "type": "string"
                 },
                 "link": {
@@ -2416,6 +2491,17 @@ const docTemplate = `{
                 "user_name": {
                     "description": "用户名",
                     "type": "string"
+                }
+            }
+        },
+        "res.ListResponse-article_api_ArticleTagResponse": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "list": {
+                    "$ref": "#/definitions/article_api.ArticleTagResponse"
                 }
             }
         },

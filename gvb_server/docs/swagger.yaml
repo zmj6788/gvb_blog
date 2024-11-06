@@ -51,6 +51,17 @@ definitions:
     - content
     - title
     type: object
+  article_api.ArticleTagResponse:
+    properties:
+      article_count:
+        type: integer
+      article_id_list:
+        items:
+          type: string
+        type: array
+      tags:
+        type: string
+    type: object
   article_api.CalendarResponse:
     properties:
       count:
@@ -415,7 +426,7 @@ definitions:
   models.ArticleModel:
     properties:
       abstract:
-        description: 文章简介
+        description: 文章简介  如果不存在文章简介，截取文章内容的100字为简介
         type: string
       banner_id:
         description: 文章封面id
@@ -445,7 +456,7 @@ definitions:
         description: es的ID
         type: string
       keyword:
-        description: 关键字             omit排除，filter.Omit("list", list)
+        description: 关键字    存储时与文章标题相同，便于搜索         omit排除，filter.Omit("list", list)
         type: string
       link:
         description: 原文链接
@@ -587,6 +598,13 @@ definitions:
       user_name:
         description: 用户名
         type: string
+    type: object
+  res.ListResponse-article_api_ArticleTagResponse:
+    properties:
+      count:
+        type: integer
+      list:
+        $ref: '#/definitions/article_api.ArticleTagResponse'
     type: object
   res.ListResponse-article_api_CalendarResponse:
     properties:
@@ -958,6 +976,41 @@ paths:
           schema:
             $ref: '#/definitions/res.Response'
       summary: 文章详情
+      tags:
+      - 文章管理
+  /api/articles/tags:
+    get:
+      description: 文章标签列表
+      parameters:
+      - description: 搜索关键字
+        in: query
+        name: key
+        type: string
+      - description: 每页显示多少条
+        in: query
+        name: limit
+        type: integer
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 排序
+        in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/res.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/res.ListResponse-article_api_ArticleTagResponse'
+              type: object
+      summary: 文章标签列表
       tags:
       - 文章管理
   /api/email_login:
