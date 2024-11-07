@@ -255,6 +255,35 @@ const docTemplate = `{
                     }
                 }
             },
+            "put": {
+                "description": "更新文章",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文章管理"
+                ],
+                "summary": "更新文章",
+                "parameters": [
+                    {
+                        "description": "广告的一些参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/article_api.ArticleUpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/res.Response"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "发布文章",
                 "produces": [
@@ -280,6 +309,35 @@ const docTemplate = `{
                         "name": "token",
                         "in": "header",
                         "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/res.Response"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "批量删除文章",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文章管理"
+                ],
+                "summary": "批量删除文章",
+                "parameters": [
+                    {
+                        "description": "文章id列表",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/article_api.ArticleRemoveRequest"
+                        }
                     }
                 ],
                 "responses": {
@@ -1671,6 +1729,17 @@ const docTemplate = `{
                 }
             }
         },
+        "article_api.ArticleRemoveRequest": {
+            "type": "object",
+            "properties": {
+                "id_list": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
         "article_api.ArticleRequest": {
             "type": "object",
             "required": [
@@ -1732,6 +1801,49 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "tag": {
+                    "type": "string"
+                }
+            }
+        },
+        "article_api.ArticleUpdateRequest": {
+            "type": "object",
+            "properties": {
+                "abstract": {
+                    "description": "文章简介",
+                    "type": "string"
+                },
+                "banner_id": {
+                    "description": "文章封面id",
+                    "type": "integer"
+                },
+                "category": {
+                    "description": "文章分类",
+                    "type": "string"
+                },
+                "content": {
+                    "description": "文章内容",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "link": {
+                    "description": "原文链接",
+                    "type": "string"
+                },
+                "source": {
+                    "description": "文章来源",
+                    "type": "string"
+                },
+                "tags": {
+                    "description": "文章标签",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "title": {
+                    "description": "文章标题",
                     "type": "string"
                 }
             }
