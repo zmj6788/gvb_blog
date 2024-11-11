@@ -4,34 +4,81 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"gvb_server/global"
 	"gvb_server/models"
+	"strings"
 
 	"github.com/olivere/elastic/v7"
 	"github.com/sirupsen/logrus"
 )
 
+type Option struct {
+	models.PageInfo
+	Fields []string
+	Tag    string //标签搜索
+}
+// 用于排序，将接受到的排序字符串转化为es的排序参数
+type SortField struct {
+		Field     string  
+		Ascending bool
+}
+// GetForm 获取页码和每页显示的数量
+// 生效于原值，需要使用指针
+func (o *Option) GetForm() int {
+	if o.Page == 0 {
+		o.Page = 1
+	}
+	if o.Limit == 0 {
+		o.Limit = 10
+	}
+	return (o.Page - 1) * o.Limit
+}
+
 // CommList 列表查询
-func CommList(key string, page, limit int) (List []models.ArticleModel, count int64, err error) {
+// CommList 升级版本，搜索内容可以自主增加。标题高亮.可以支持排序
+func CommList(o Option) (List []models.ArticleModel, count int64, err error) {
 	boolSearch := elastic.NewBoolQuery()
-	from := page
-	if key != "" {
+	if o.Key != "" {
 		boolSearch.Must(
-			elastic.NewMatchQuery("title", key),
+			elastic.NewMultiMatchQuery(o.Key, o.Fields...),
 		)
 	}
-	if limit == 0 {
-		limit = 10
+
+	if o.Tag != "" {
+		boolSearch.Must(
+			elastic.NewMultiMatchQuery(o.Tag, "tags"),
+		)
 	}
-	if from == 0 {
-		from = 1
+	
+	sortField := SortField{
+		Field:     "created_at",
+		Ascending: false, // 从小到大  从大到小
+	}
+	// 自定义排序
+	if o.Sort != "" {
+		// 按照 空格 分割字符串
+		_list := strings.Split(o.Sort, " ")
+		if len(_list) == 2 && (_list[1] == "desc" || _list[1] == "asc") {
+			sortField.Field = _list[0]
+			if _list[1] == "desc" {
+				// 默认降序排序
+				sortField.Ascending = false
+			}
+			if _list[1] == "asc" {
+				// 时间升序排列
+				sortField.Ascending = true
+			}
+		}
 	}
 
 	res, err := global.ESClient.
 		Search(models.ArticleModel{}.Index()).
 		Query(boolSearch).
-		From((from - 1) * limit).
-		Size(limit).
+		Highlight(elastic.NewHighlight().Field("title")).
+		From(o.GetForm()).
+		Sort(sortField.Field, sortField.Ascending).
+		Size(o.Limit).
 		Do(context.Background())
 	if err != nil {
 		logrus.Error(err.Error())
@@ -52,6 +99,12 @@ func CommList(key string, page, limit int) (List []models.ArticleModel, count in
 		if err != nil {
 			logrus.Error(err)
 			continue
+		}
+		// 显示时应用高亮
+		title, ok := hit.Highlight["title"]
+		if ok {
+			fmt.Println(title)
+			model.Title = title[0]
 		}
 		model.ID = hit.Id
 		List = append(List, model)

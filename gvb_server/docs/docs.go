@@ -232,6 +232,12 @@ const docTemplate = `{
                         "description": "排序",
                         "name": "sort",
                         "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Query参数 用form来接收",
+                        "name": "tag",
+                        "in": "query"
                     }
                 ],
                 "responses": {
