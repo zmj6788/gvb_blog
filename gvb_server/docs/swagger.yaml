@@ -271,6 +271,11 @@ definitions:
     - SignQQ
     - SignGitee
     - SignEmail
+  digg_api.DiggRequest:
+    properties:
+      id:
+        type: string
+    type: object
   images_api.FileUploadResponse:
     properties:
       file_name:
@@ -1099,6 +1104,26 @@ paths:
                   $ref: '#/definitions/res.ListResponse-article_api_ArticleTagResponse'
               type: object
       summary: 文章标签列表
+      tags:
+      - 文章管理
+  /api/digg/article:
+    post:
+      description: 文章点赞
+      parameters:
+      - description: 表示多个参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/digg_api.DiggRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/res.Response'
+      summary: 文章点赞
       tags:
       - 文章管理
   /api/email_login:

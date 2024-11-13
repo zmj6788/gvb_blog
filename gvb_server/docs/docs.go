@@ -504,6 +504,37 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/digg/article": {
+            "post": {
+                "description": "文章点赞",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文章管理"
+                ],
+                "summary": "文章点赞",
+                "parameters": [
+                    {
+                        "description": "表示多个参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/digg_api.DiggRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/res.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/email_login": {
             "post": {
                 "description": "邮箱登录",
@@ -2094,6 +2125,14 @@ const docTemplate = `{
                 "SignGitee",
                 "SignEmail"
             ]
+        },
+        "digg_api.DiggRequest": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                }
+            }
         },
         "images_api.FileUploadResponse": {
             "type": "object",
