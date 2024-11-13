@@ -16,6 +16,8 @@ const diggPrefix = "digg"
 */
 // Digg 点赞一篇文章
 func Digg(id string) error {
+	// 可以增添一个参数用于判断是点赞还是取消点赞
+	// 实现取消点赞
 	// 获取点赞数
 	// 第一次若没有获取到num被赋值为0
 	num, _ := global.Redis.HGet(diggPrefix, id).Int()

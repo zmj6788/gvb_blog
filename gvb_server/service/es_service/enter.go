@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"gvb_server/global"
 	"gvb_server/models"
+	"gvb_server/service/redis_service"
 	"strings"
 
 	"github.com/olivere/elastic/v7"
@@ -18,11 +19,13 @@ type Option struct {
 	Fields []string
 	Tag    string //标签搜索
 }
+
 // 用于排序，将接受到的排序字符串转化为es的排序参数
 type SortField struct {
-		Field     string  
-		Ascending bool
+	Field     string
+	Ascending bool
 }
+
 // GetForm 获取页码和每页显示的数量
 // 生效于原值，需要使用指针
 func (o *Option) GetForm() int {
@@ -50,7 +53,7 @@ func CommList(o Option) (List []models.ArticleModel, count int64, err error) {
 			elastic.NewMultiMatchQuery(o.Tag, "tags"),
 		)
 	}
-	
+
 	sortField := SortField{
 		Field:     "created_at",
 		Ascending: false, // 从小到大  从大到小
@@ -85,6 +88,7 @@ func CommList(o Option) (List []models.ArticleModel, count int64, err error) {
 		return
 	}
 	count = int64(res.Hits.TotalHits.Value) //搜索到结果总条数
+	diggInfo := redis_service.GetDiggInfo()
 	//将es中的数据解析到go结构体中
 	for _, hit := range res.Hits.Hits {
 		var model models.ArticleModel
@@ -100,6 +104,7 @@ func CommList(o Option) (List []models.ArticleModel, count int64, err error) {
 			logrus.Error(err)
 			continue
 		}
+		
 		// 显示时应用高亮
 		title, ok := hit.Highlight["title"]
 		if ok {
@@ -107,6 +112,10 @@ func CommList(o Option) (List []models.ArticleModel, count int64, err error) {
 			model.Title = title[0]
 		}
 		model.ID = hit.Id
+		// 更新点赞数,但是没有同步数据到es
+		// 没有同步但仍然能正确显示点赞数了，因为redis里的数据没有被清空
+		digg := diggInfo[hit.Id]
+		model.DiggCount = model.DiggCount + digg
 		List = append(List, model)
 	}
 	return List, count, err
