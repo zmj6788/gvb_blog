@@ -3,6 +3,7 @@ package article_api
 import (
 	"gvb_server/models/res"
 	"gvb_server/service/es_service"
+	"gvb_server/service/redis_service"
 
 	"github.com/gin-gonic/gin"
 )
@@ -27,7 +28,9 @@ func (ArticleApi) ArticleDetailView(c *gin.Context) {
 		res.FailWithError(err, &cr, c)
 		return
 	}
-
+	
+	// 查看文章详情时，浏览量增加
+	redis_service.Look(cr.ID)
 	model, err := es_service.CommDetail(cr.ID)
 	if err != nil {
 		res.FailWithMessage("文章不存在", c)
@@ -59,6 +62,7 @@ func (ArticleApi) ArticleDetailByTitleView(c *gin.Context) {
 		return
 	}
 
+	
 	model, err := es_service.CommDetailByKeyword(cr.Title)
 	if err != nil {
 		res.FailWithMessage(err.Error(), c)

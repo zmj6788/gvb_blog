@@ -89,6 +89,7 @@ func CommList(o Option) (List []models.ArticleModel, count int64, err error) {
 	}
 	count = int64(res.Hits.TotalHits.Value) //搜索到结果总条数
 	diggInfo := redis_service.GetDiggInfo()
+	lookInfo := redis_service.GetLookInfo()
 	//将es中的数据解析到go结构体中
 	for _, hit := range res.Hits.Hits {
 		var model models.ArticleModel
@@ -116,6 +117,8 @@ func CommList(o Option) (List []models.ArticleModel, count int64, err error) {
 		// 没有同步但仍然能正确显示点赞数了，因为redis里的数据没有被清空
 		digg := diggInfo[hit.Id]
 		model.DiggCount = model.DiggCount + digg
+		look := lookInfo[hit.Id]
+		model.LookCount = model.LookCount + look
 		List = append(List, model)
 	}
 	return List, count, err
@@ -137,6 +140,7 @@ func CommDetail(id string) (model models.ArticleModel, err error) {
 	}
 	err = json.Unmarshal(data, &model)
 	model.ID = res.Id
+	model.LookCount = model.LookCount + redis_service.GetLook(id)
 	return
 }
 
@@ -161,5 +165,7 @@ func CommDetailByKeyword(key string) (model models.ArticleModel, err error) {
 		return
 	}
 	model.ID = hit.Id
+	redis_service.Look(hit.Id)
+	model.LookCount = model.LookCount + redis_service.GetLook(hit.Id)
 	return
 }
