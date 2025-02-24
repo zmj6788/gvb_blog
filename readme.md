@@ -1,4 +1,4 @@
- gvb_server 是一个使用go语言编写个人博客项目的服务端;
+gvb_server 是一个使用go语言编写个人博客项目的服务端;
 gvb_web 是使用vue编写个人博客项目的前端后台管理平台；
 
 swagger文档地址：http://127.0.0.1:8080/swagger/index.html#/
@@ -28,3 +28,11 @@ git log
 git switch -c use
 
 git checkout 138b99a8ee4f324245df649758247331703c0cda
+
+
+
+
+
+
+
+
