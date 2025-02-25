@@ -1,11 +1,11 @@
 package article_api
 
 import (
-	"context"
 	"gvb_server/global"
 	"gvb_server/models"
 	"gvb_server/models/ctype"
 	"gvb_server/models/res"
+	"gvb_server/service/es_service"
 	"time"
 
 	"github.com/fatih/structs"
@@ -14,9 +14,9 @@ import (
 )
 
 type ArticleUpdateRequest struct {
-	Title    string   `json:"title" `     // 文章标题
-	Abstract string   `json:"abstract" `  // 文章简介
-	Content  string   `json:"content" `   // 文章内容
+	Title    string   `json:"title" `    // 文章标题
+	Abstract string   `json:"abstract" ` // 文章简介
+	Content  string   `json:"content" `  // 文章内容
 	Category string   `json:"category"`  // 文章分类
 	Source   string   `json:"source"`    // 文章来源
 	Link     string   `json:"link"`      // 原文链接
@@ -98,12 +98,7 @@ func (ArticleApi) ArticleUpdateView(c *gin.Context) {
 
 	// Doc(DataMap)时，Elasticsearch客户端库负责将这个map转换为JSON格式
 	// json更新es数据
-	_, err = global.ESClient.
-		Update().
-		Index(models.ArticleModel{}.Index()).
-		Id(cr.ID).
-		Doc(DataMap).
-		Do(context.Background())
+	err = es_service.ArticleUpdate(cr.ID, DataMap)
 	if err != nil {
 		logrus.Error(err.Error())
 		res.FailWithMessage("更新失败", c)

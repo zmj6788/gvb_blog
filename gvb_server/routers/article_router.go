@@ -11,6 +11,7 @@ func ArticleRouter(router *gin.RouterGroup) {
 	ArticleApi := api.ApiGroupApp.ArticleApi
 
 	router.POST("/articles", middleware.JwtAuth(), ArticleApi.ArticleCreateView)
+	router.POST("/articles/collect", middleware.JwtAuth(), ArticleApi.ArticleCollectCreateView)
 	
 	router.GET("/articles", ArticleApi.ArticleListView)
 	router.GET("/articles/:id", ArticleApi.ArticleDetailView)

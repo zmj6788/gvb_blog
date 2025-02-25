@@ -19,6 +19,11 @@ definitions:
     - images
     - title
     type: object
+  article_api.ArticleCollectRequest:
+    properties:
+      id:
+        type: string
+    type: object
   article_api.ArticleRemoveRequest:
     properties:
       id_list:
@@ -1050,6 +1055,31 @@ paths:
                   $ref: '#/definitions/res.ListResponse-article_api_CalendarResponse'
               type: object
       summary: 文章日历
+      tags:
+      - 文章管理
+  /api/articles/collect:
+    post:
+      description: 文章收藏或取消
+      parameters:
+      - description: 用户token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 表示多个参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/article_api.ArticleCollectRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/res.Response'
+      summary: 文章收藏或取消
       tags:
       - 文章管理
   /api/articles/detail:

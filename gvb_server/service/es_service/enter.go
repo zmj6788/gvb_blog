@@ -169,3 +169,13 @@ func CommDetailByKeyword(key string) (model models.ArticleModel, err error) {
 	model.LookCount = model.LookCount + redis_service.GetLook(hit.Id)
 	return
 }
+
+func ArticleUpdate(id string, data map[string]any) error {
+	_, err := global.ESClient.
+		Update().
+		Index(models.ArticleModel{}.Index()).
+		Id(id).
+		Doc(data).
+		Do(context.Background())
+	return err
+}

@@ -388,6 +388,44 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/articles/collect": {
+            "post": {
+                "description": "文章收藏或取消",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文章管理"
+                ],
+                "summary": "文章收藏或取消",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "用户token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "表示多个参数",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/article_api.ArticleCollectRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/res.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/articles/detail": {
             "get": {
                 "description": "文章详情",
@@ -1766,6 +1804,14 @@ const docTemplate = `{
                 }
             }
         },
+        "article_api.ArticleCollectRequest": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
         "article_api.ArticleRemoveRequest": {
             "type": "object",
             "properties": {
@@ -2896,7 +2942,7 @@ var SwaggerInfo = &swag.Spec{
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 }
-// http://127.0.0.1:8080/swagger/index.html
+
 func init() {
 	swag.Register(SwaggerInfo.InstanceName(), SwaggerInfo)
 }

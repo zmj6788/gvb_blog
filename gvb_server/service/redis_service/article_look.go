@@ -23,13 +23,13 @@ func GetLook(id string) int {
 
 // GetLookInfo 取出浏览量数据
 func GetLookInfo() map[string]int {
-	var DiggInfo = map[string]int{}
+	var LookInfo = map[string]int{}
 	maps := global.Redis.HGetAll(lookPrefix).Val()
 	for id, val := range maps {
 		num, _ := strconv.Atoi(val)
-		DiggInfo[id] = num
+		LookInfo[id] = num
 	}
-	return DiggInfo
+	return LookInfo
 }
 
 func LookClear() {
