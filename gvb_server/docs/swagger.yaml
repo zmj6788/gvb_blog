@@ -115,6 +115,70 @@ definitions:
       date:
         type: string
     type: object
+  article_api.CollResponse:
+    properties:
+      abstract:
+        description: 文章简介  如果不存在文章简介，截取文章内容的100字为简介
+        type: string
+      banner_id:
+        description: 文章封面id
+        type: integer
+      banner_url:
+        description: 文章封面
+        type: string
+      category:
+        description: 文章分类
+        type: string
+      collects_count:
+        description: 文章收藏量
+        type: integer
+      comment_count:
+        description: 文章评论量
+        type: integer
+      content:
+        description: 文章内容
+        type: string
+      created_at:
+        type: string
+      digg_count:
+        description: 文章点赞量
+        type: integer
+      id:
+        description: es的ID
+        type: string
+      keyword:
+        description: 关键字    存储时与文章标题相同，便于搜索         omit排除，filter.Omit("list", list)
+        type: string
+      link:
+        description: 原文链接
+        type: string
+      look_count:
+        description: 文章浏览量
+        type: integer
+      source:
+        description: 文章来源
+        type: string
+      tags:
+        description: 文章标签
+        items:
+          type: string
+        type: array
+      title:
+        description: 文章标题
+        type: string
+      updated_at:
+        description: 更新时间
+        type: string
+      user_avatar:
+        description: 用户头像
+        type: string
+      user_id:
+        description: 用户id
+        type: integer
+      user_nick_name:
+        description: 用户昵称
+        type: string
+    type: object
   config.Email:
     properties:
       default_from_email:
@@ -664,6 +728,13 @@ definitions:
       list:
         $ref: '#/definitions/article_api.CalendarResponse'
     type: object
+  res.ListResponse-article_api_CollResponse:
+    properties:
+      count:
+        type: integer
+      list:
+        $ref: '#/definitions/article_api.CollResponse'
+    type: object
   res.ListResponse-images_api_FileUploadResponse:
     properties:
       count:
@@ -1057,7 +1128,46 @@ paths:
       summary: 文章日历
       tags:
       - 文章管理
-  /api/articles/collect:
+  /api/articles/collects:
+    get:
+      description: 我的文章收藏列表
+      parameters:
+      - description: 用户token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 搜索关键字
+        in: query
+        name: key
+        type: string
+      - description: 每页显示多少条
+        in: query
+        name: limit
+        type: integer
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 排序
+        in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/res.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/res.ListResponse-article_api_CollResponse'
+              type: object
+      summary: 我的文章收藏列表
+      tags:
+      - 文章管理
     post:
       description: 文章收藏或取消
       parameters:

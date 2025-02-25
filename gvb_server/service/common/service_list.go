@@ -26,7 +26,7 @@ func ComList[T any](model T , option Option) (list []T, count int64, err error) 
 	//嵌套一层查询数据库中的这个结构体
 	query := DB.Where(model)
 	
-	count = query.Select("id").Find(&list).RowsAffected
+	count = query.Find(&list).RowsAffected
 	//复位
 	query = DB.Where(model)
 	//偏移量

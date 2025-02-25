@@ -20,7 +20,7 @@ type ArticleCollectRequest struct {
 // @Description 文章收藏或取消
 // @Param token header string true "用户token"
 // @Param data body ArticleCollectRequest    true  "表示多个参数"
-// @Router /api/articles/collect [post]
+// @Router /api/articles/collects [post]
 // @Produce json
 // @Success 200 {object} res.Response{}
 func (ArticleApi) ArticleCollectCreateView(c *gin.Context) {
