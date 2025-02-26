@@ -22,4 +22,5 @@ func ArticleRouter(router *gin.RouterGroup) {
 
 	router.PUT("/articles", ArticleApi.ArticleUpdateView)
 	router.DELETE("/articles", ArticleApi.ArticleRemoveView)
+	router.DELETE("/articles/collects", middleware.JwtAuth(), ArticleApi.ArticleCollectBatchRemoveView)
 }

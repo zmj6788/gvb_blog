@@ -625,6 +625,13 @@ definitions:
         description: 图片路径
         type: string
     type: object
+  models.ESIDListRequest:
+    properties:
+      id_list:
+        items:
+          type: string
+        type: array
+    type: object
   models.MessageModel:
     properties:
       content:
@@ -1129,6 +1136,30 @@ paths:
       tags:
       - 文章管理
   /api/articles/collects:
+    delete:
+      description: 批量删除我的收藏文章
+      parameters:
+      - description: 用户token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 文章id列表
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.ESIDListRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/res.Response'
+      summary: 批量删除我的收藏文章
+      tags:
+      - 文章管理
     get:
       description: 我的文章收藏列表
       parameters:

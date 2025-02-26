@@ -50,7 +50,7 @@ func (ArticleApi) ArticleCollectListView(c *gin.Context) {
 		articleIDList = append(articleIDList, model.ArticleID)
 		collMap[model.ArticleID] = model.CreatedAt.Format("2006-01-02 15:04:05")
 	}
-
+	// 查询id列表
 	boolSearch := elastic.NewTermsQuery("_id", articleIDList...)
 
 	var collList = make([]CollResponse, 0)
@@ -74,6 +74,9 @@ func (ArticleApi) ArticleCollectListView(c *gin.Context) {
 			global.Log.Error(err)
 			continue
 		}
+		// fmt.Println(article)
+		// 这里赋值的原因，article中没有id
+		// es的_id就是文章id
 		article.ID = hit.Id
 		collList = append(collList, CollResponse{
 			ArticleModel: article,
