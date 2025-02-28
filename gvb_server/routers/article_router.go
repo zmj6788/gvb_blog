@@ -14,6 +14,7 @@ func ArticleRouter(router *gin.RouterGroup) {
 	router.POST("/articles/collects", middleware.JwtAuth(), ArticleApi.ArticleCollectCreateView)
 	
 	router.GET("/articles", ArticleApi.ArticleListView)
+	router.GET("/articles/text", ArticleApi.FullTextSearchView) //全文搜索
 	router.GET("/articles/:id", ArticleApi.ArticleDetailView)
 	router.GET("/articles/detail", ArticleApi.ArticleDetailByTitleView)
 	router.GET("/articles/calendar", ArticleApi.ArticleCalendarView)

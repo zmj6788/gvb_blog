@@ -39,10 +39,7 @@ func (ArticleApi) ArticleRemoveView(c *gin.Context) {
 	bulkRequest := global.ESClient.Bulk().Index(models.ArticleModel{}.Index()).Refresh("true")
 
 	// 遍历ID列表，为每个ID添加一个删除操作
-	// 如果文章删除了，用户收藏了这个文章怎么办
-	// 顺带把这个文章关联的收藏的数据也删除了
-
-
+	
 	for _, id := range cr.IDList {
 		req := elastic.NewBulkDeleteRequest().Id(id)
 		bulkRequest.Add(req)
@@ -56,6 +53,8 @@ func (ArticleApi) ArticleRemoveView(c *gin.Context) {
 		res.FailWithMessage("删除文章失败", c)
 		return
 	}
-	
+	// 如果文章删除了，用户收藏了这个文章怎么办
+	// 顺带把这个文章关联的收藏的数据也删除了
+	global.DB.Where("article_id in ?", cr.IDList).Delete(&models.UserCollectModel{})
 	res.OkWithMessage(fmt.Sprintf("成功删除 %d 篇文章", len(bulkResponse.Succeeded())), c)
 }
