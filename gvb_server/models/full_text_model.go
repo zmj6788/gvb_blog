@@ -10,6 +10,7 @@ import (
 // 文章表
 type FullTextModel struct {
 	ID    string `json:"id"  structs:"id"`      // es的ID
+	Key    string `json:"key"`      // 文章关联的ID
 	Title string `json:"title" structs:"title"` // 文章标题
 	Body  string `json:"body" structs:"body"`   // 文章内容
 	Slug  string `json:"slug" structs:"slug"`   // 标题的跳转链接
@@ -29,6 +30,9 @@ func (FullTextModel) Mapping() string {
   }, 
   "mappings": {
     "properties": {
+      "key": { 
+        "type": "keyword"
+      },
       "title": { 
         "type": "text"
       },

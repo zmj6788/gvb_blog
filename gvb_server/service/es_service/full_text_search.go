@@ -1,15 +1,21 @@
 package es_service
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
+	"gvb_server/global"
+	"gvb_server/models"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
+	"github.com/olivere/elastic/v7"
 	"github.com/russross/blackfriday"
+	"github.com/sirupsen/logrus"
 )
 
 type SearchData struct {
+	Key string `json:"key"`     //关联文章id，便于删除
 	Body  string `json:"body"`  // 正文
 	Slug  string `json:"slug"`  // 包含文章的id 的跳转地址
 	Title string `json:"title"` // 标题
@@ -52,6 +58,7 @@ func GetSearchIndexDataByContent(id, title, content string) (searchDataList []Se
 			Title: headList[i],
 			Body:  bodyList[i],
 			Slug:  id + getSlug(headList[i]),
+			Key:  id,
 		})
 	}
 	b, _ := json.Marshal(searchDataList)
@@ -79,4 +86,35 @@ func getBody(body string) string {
 // 跳转链接格式处理
 func getSlug(slug string) string {
 	return "#" + slug
+}
+
+// 同步一个文章数据到全文搜索的表中
+func AsyncArticleByFullText(id, title, content string)  {
+	// 处理文章数据为支持全文搜索的格式
+	searchDataList := GetSearchIndexDataByContent(id, title, content)
+	// fmt.Println(searchDataList)
+	// 将数据入库，es库
+	// 批量添加数据到es
+	bulk := global.ESClient.Bulk()
+	for _, indexData := range searchDataList {
+		req := elastic.NewBulkIndexRequest().Index(models.FullTextModel{}.Index()).Doc(indexData)
+		bulk.Add(req)
+	}
+	result, err := bulk.Do(context.Background())
+	if err != nil {
+		logrus.Error(err)
+		return 
+	}
+	logrus.Infof("%s 添加成功,共 %d 条",title, len(result.Succeeded()))
+}
+
+// 删除文章在全文搜索中的数据
+func DeleteFullTextByArticleID(id string) {
+  boolSearch := elastic.NewTermQuery("key", id)
+  res, _ := global.ESClient.
+    DeleteByQuery().
+    Index(models.FullTextModel{}.Index()).
+    Query(boolSearch).
+    Do(context.Background())
+  logrus.Infof("成功删除 %d 条记录", res.Deleted)
 }

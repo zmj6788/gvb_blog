@@ -5,6 +5,7 @@ import (
 	"gvb_server/models"
 	"gvb_server/models/ctype"
 	"gvb_server/models/res"
+	"gvb_server/service/es_service"
 	"gvb_server/untils/jwts"
 	"strings"
 	"time"
@@ -145,11 +146,14 @@ func (ArticleApi) ArticleCreateView(c *gin.Context) {
 	
 	// 创建一条文章数据
 	err = article.Create()
+	
 	if err != nil {
 		global.Log.Error(err)
 		res.FailWithMessage(err.Error(), c)
 		return
 	}
+	// 添加文章后，要同步文章数据到全文搜索的表中
+	go es_service.AsyncArticleByFullText(article.ID, article.Title, article.Content)
 	res.OkWithMessage("文章发布成功", c)
 
 }

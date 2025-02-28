@@ -95,6 +95,12 @@ func (ArticleApi) ArticleUpdateView(c *gin.Context) {
 		}
 		DataMap[key] = v
 	}
+	err = article.GetDataById(cr.ID)
+	if err != nil {
+		global.Log.Error(err)
+		res.FailWithMessage("文章不存在", c)
+		return
+	}
 
 	// Doc(DataMap)时，Elasticsearch客户端库负责将这个map转换为JSON格式
 	// json更新es数据
@@ -103,6 +109,14 @@ func (ArticleApi) ArticleUpdateView(c *gin.Context) {
 		logrus.Error(err.Error())
 		res.FailWithMessage("更新失败", c)
 		return
+	}
+	// 文章更新后，需要同步文章数据到全文搜索的表中
+	newArticle, _ := es_service.CommDetail(cr.ID)
+	if article.Content != newArticle.Content || article.Title != newArticle.Title {
+		// 删除原有的
+		es_service.DeleteFullTextByArticleID(cr.ID)
+		// 添加现在的
+		es_service.AsyncArticleByFullText(cr.ID, newArticle.Title, newArticle.Content)
 	}
 	res.OkWithMessage("更新成功", c)
 }
