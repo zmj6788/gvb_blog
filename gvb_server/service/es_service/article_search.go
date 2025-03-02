@@ -66,6 +66,7 @@ func CommList(o Option) (List []models.ArticleModel, count int64, err error) {
 	count = int64(res.Hits.TotalHits.Value) //搜索到结果总条数
 	diggInfo := redis_service.GetDiggInfo()
 	lookInfo := redis_service.GetLookInfo()
+	commentInfo := redis_service.GetCommentInfo()
 	//将es中的数据解析到go结构体中
 	for _, hit := range res.Hits.Hits {
 		var model models.ArticleModel
@@ -95,6 +96,8 @@ func CommList(o Option) (List []models.ArticleModel, count int64, err error) {
 		model.DiggCount = model.DiggCount + digg
 		look := lookInfo[hit.Id]
 		model.LookCount = model.LookCount + look
+		comment := commentInfo[hit.Id]
+		model.CommentCount = model.CommentCount + comment
 		List = append(List, model)
 	}
 	return List, count, err

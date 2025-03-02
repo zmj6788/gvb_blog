@@ -179,6 +179,19 @@ definitions:
         description: 用户昵称
         type: string
     type: object
+  comment_api.CommentRequest:
+    properties:
+      article_id:
+        type: string
+      content:
+        type: string
+      parent_comment_id:
+        description: 父评论id
+        type: integer
+    required:
+    - article_id
+    - content
+    type: object
   config.Email:
     properties:
       default_from_email:
@@ -632,6 +645,24 @@ definitions:
           type: string
         type: array
     type: object
+  models.FullTextModel:
+    properties:
+      body:
+        description: 文章内容
+        type: string
+      id:
+        description: es的ID
+        type: string
+      key:
+        description: 文章关联的ID
+        type: string
+      slug:
+        description: 标题的跳转链接
+        type: string
+      title:
+        description: 文章标题
+        type: string
+    type: object
   models.MessageModel:
     properties:
       content:
@@ -769,6 +800,13 @@ definitions:
         type: integer
       list:
         $ref: '#/definitions/models.BannerModel'
+    type: object
+  res.ListResponse-models_FullTextModel:
+    properties:
+      count:
+        type: integer
+      list:
+        $ref: '#/definitions/models.FullTextModel'
     type: object
   res.ListResponse-models_MessageModel:
     properties:
@@ -1277,6 +1315,66 @@ paths:
       summary: 文章标签列表
       tags:
       - 文章管理
+  /api/articles/text:
+    get:
+      description: 全文搜索
+      parameters:
+      - description: 搜索关键字
+        in: query
+        name: key
+        type: string
+      - description: 每页显示多少条
+        in: query
+        name: limit
+        type: integer
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 排序
+        in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/res.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/res.ListResponse-models_FullTextModel'
+              type: object
+      summary: 全文搜索
+      tags:
+      - 文章管理
+  /api/comments:
+    post:
+      description: 发布评论
+      parameters:
+      - description: 表示多个参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/comment_api.CommentRequest'
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/res.Response'
+      summary: 发布评论
+      tags:
+      - 评论管理
   /api/digg/article:
     post:
       description: 文章点赞
