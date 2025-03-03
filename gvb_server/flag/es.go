@@ -3,7 +3,7 @@ package flag
 import "gvb_server/models"
 
 func ESCreateIndex() {
-	// models.ArticleModel{}.CreateIndex()
+	models.ArticleModel{}.CreateIndex()
 	models.FullTextModel{}.CreateIndex()
 
 }

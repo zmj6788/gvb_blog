@@ -11,5 +11,6 @@ func CommentRouter(router *gin.RouterGroup) {
 	CommentApi := api.ApiGroupApp.CommentApi
 
 	router.POST("/comments", middleware.JwtAuth(), CommentApi.CommentCreateView)
+	router.GET("/comments", CommentApi.CommentListView)
 
 }
