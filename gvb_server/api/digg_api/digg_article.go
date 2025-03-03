@@ -10,6 +10,7 @@ import (
 type DiggRequest struct {
 	ID string `uri:"id" json:"id" form:"id"`
 }
+
 // DiggArticleView 文章点赞
 // @Tags 文章管理
 // @Summary 文章点赞
@@ -26,7 +27,8 @@ func (DiggApi) DiggArticleView(c *gin.Context) {
 		return
 	}
 	// 可以校验id是否存在或长度是否符合
-	err = redis_service.Digg(req.ID)
+	err = redis_service.NewDigg().Set(req.ID)
+
 	if err != nil {
 		res.FailWithMessage("点赞失败", c)
 		return

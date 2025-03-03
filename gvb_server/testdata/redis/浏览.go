@@ -14,14 +14,14 @@ func main() {
 	global.Redis = core.ConnectRedis()
 	global.ESClient = core.EsConnect()
 
-	err := redis_service.Look("2DtL-5IBBOEDMw_pwTmW")
+	err := redis_service.NewArticleLook().Set("2DtL-5IBBOEDMw_pwTmW")
 	if err != nil {
 		global.Log.Error(err.Error())
 	}
 	global.Log.Info("浏览成功")
 
-	global.Log.Info(redis_service.GetLook("1ztL-5IBBOEDMw_pRTnk"))
-	global.Log.Info(redis_service.GetLookInfo())
+	global.Log.Info(redis_service.NewArticleLook().Get("1ztL-5IBBOEDMw_pRTnk"))
+	global.Log.Info(redis_service.NewArticleLook().GetInfo())
 	// redis_service.LookClear()
 
 }

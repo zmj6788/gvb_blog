@@ -30,7 +30,7 @@ func (ArticleApi) ArticleDetailView(c *gin.Context) {
 	}
 	
 	// 查看文章详情时，浏览量增加
-	redis_service.Look(cr.ID)
+	redis_service.NewArticleLook().Set(cr.ID)
 	model, err := es_service.CommDetail(cr.ID)
 	if err != nil {
 		res.FailWithMessage("文章不存在", c)

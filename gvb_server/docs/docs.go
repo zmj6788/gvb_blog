@@ -700,6 +700,43 @@ const docTemplate = `{
             }
         },
         "/api/comments": {
+            "get": {
+                "description": "评论列表",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "评论管理"
+                ],
+                "summary": "评论列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "article_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/res.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/res.ListResponse-models_CommentModel"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "发布评论",
                 "produces": [
@@ -2879,6 +2916,66 @@ const docTemplate = `{
                 }
             }
         },
+        "models.CommentModel": {
+            "type": "object",
+            "properties": {
+                "article_id": {
+                    "description": "文章id",
+                    "type": "string"
+                },
+                "comment_count": {
+                    "description": "子评论数",
+                    "type": "integer"
+                },
+                "comment_model": {
+                    "description": "父级评论",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.CommentModel"
+                        }
+                    ]
+                },
+                "content": {
+                    "description": "评论内容",
+                    "type": "string"
+                },
+                "created_at": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "digg_count": {
+                    "description": "点赞数",
+                    "type": "integer"
+                },
+                "id": {
+                    "description": "主键ID",
+                    "type": "integer"
+                },
+                "parent_comment_id": {
+                    "description": "父评论id",
+                    "type": "integer"
+                },
+                "sub_comments": {
+                    "description": "子评论列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.CommentModel"
+                    }
+                },
+                "user": {
+                    "description": "关联的用户",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.UserModel"
+                        }
+                    ]
+                },
+                "user_id": {
+                    "description": "评论的用户",
+                    "type": "integer"
+                }
+            }
+        },
         "models.ESIDListRequest": {
             "type": "object",
             "properties": {
@@ -2991,7 +3088,7 @@ const docTemplate = `{
                     "description": "地址",
                     "type": "string"
                 },
-                "avatar_id": {
+                "avatar": {
                     "description": "头像id",
                     "type": "string"
                 },
@@ -3008,7 +3105,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "ip": {
-                    "description": "ip",
+                    "description": "ip地址",
                     "type": "string"
                 },
                 "nick_name": {
@@ -3016,7 +3113,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "role": {
-                    "description": "权限 1管理员 2普通用户 3游客 4封禁",
+                    "description": "权限  1 管理员  2 普通用户  3 游客",
                     "allOf": [
                         {
                             "$ref": "#/definitions/ctype.Role"
@@ -3036,7 +3133,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "token": {
-                    "description": "token其他平台的唯一验证id",
+                    "description": "其他平台的唯一id",
                     "type": "string"
                 },
                 "user_name": {
@@ -3119,6 +3216,17 @@ const docTemplate = `{
                 },
                 "list": {
                     "$ref": "#/definitions/models.BannerModel"
+                }
+            }
+        },
+        "res.ListResponse-models_CommentModel": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "list": {
+                    "$ref": "#/definitions/models.CommentModel"
                 }
             }
         },

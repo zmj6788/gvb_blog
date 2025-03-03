@@ -31,9 +31,9 @@ func main() {
 		return
 	}
 
-	diggInfo := redis_service.GetDiggInfo()
-	lookInfo := redis_service.GetLookInfo()
-	commentInfo := redis_service.GetCommentInfo()
+	diggInfo := redis_service.NewDigg().GetInfo()
+	lookInfo := redis_service.NewArticleLook().GetInfo()
+	commentInfo := redis_service.NewCommentCount().GetInfo()
 	for _, hit := range result.Hits.Hits {
 		var article models.ArticleModel
 		err := json.Unmarshal(hit.Source, &article)
@@ -64,7 +64,7 @@ func main() {
 		}
 		logrus.Infof("%s, 点赞浏览评论数据同步成功, 点赞数：%d, 浏览数：%d, 评论数 %d", article.Title, newDigg, newLook, newComment)
 	}
-	redis_service.DiggClear()
-	redis_service.LookClear()
-	redis_service.CommentClear()
+	redis_service.NewDigg().Clear()
+	redis_service.NewArticleLook().Clear()
+	redis_service.NewCommentCount().Clear()
 }

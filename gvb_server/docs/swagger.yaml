@@ -638,6 +638,46 @@ definitions:
         description: 图片路径
         type: string
     type: object
+  models.CommentModel:
+    properties:
+      article_id:
+        description: 文章id
+        type: string
+      comment_count:
+        description: 子评论数
+        type: integer
+      comment_model:
+        allOf:
+        - $ref: '#/definitions/models.CommentModel'
+        description: 父级评论
+      content:
+        description: 评论内容
+        type: string
+      created_at:
+        description: 创建时间
+        type: string
+      digg_count:
+        description: 点赞数
+        type: integer
+      id:
+        description: 主键ID
+        type: integer
+      parent_comment_id:
+        description: 父评论id
+        type: integer
+      sub_comments:
+        description: 子评论列表
+        items:
+          $ref: '#/definitions/models.CommentModel'
+        type: array
+      user:
+        allOf:
+        - $ref: '#/definitions/models.UserModel'
+        description: 关联的用户
+      user_id:
+        description: 评论的用户
+        type: integer
+    type: object
   models.ESIDListRequest:
     properties:
       id_list:
@@ -716,7 +756,7 @@ definitions:
       addr:
         description: 地址
         type: string
-      avatar_id:
+      avatar:
         description: 头像id
         type: string
       created_at:
@@ -729,7 +769,7 @@ definitions:
         description: 主键ID
         type: integer
       ip:
-        description: ip
+        description: ip地址
         type: string
       nick_name:
         description: 昵称
@@ -737,7 +777,7 @@ definitions:
       role:
         allOf:
         - $ref: '#/definitions/ctype.Role'
-        description: 权限 1管理员 2普通用户 3游客 4封禁
+        description: 权限  1 管理员  2 普通用户  3 游客
       sign_status:
         allOf:
         - $ref: '#/definitions/ctype.SignStatus'
@@ -746,7 +786,7 @@ definitions:
         description: 手机号
         type: string
       token:
-        description: token其他平台的唯一验证id
+        description: 其他平台的唯一id
         type: string
       user_name:
         description: 用户名
@@ -800,6 +840,13 @@ definitions:
         type: integer
       list:
         $ref: '#/definitions/models.BannerModel'
+    type: object
+  res.ListResponse-models_CommentModel:
+    properties:
+      count:
+        type: integer
+      list:
+        $ref: '#/definitions/models.CommentModel'
     type: object
   res.ListResponse-models_FullTextModel:
     properties:
@@ -1351,6 +1398,27 @@ paths:
       tags:
       - 文章管理
   /api/comments:
+    get:
+      description: 评论列表
+      parameters:
+      - in: query
+        name: article_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/res.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/res.ListResponse-models_CommentModel'
+              type: object
+      summary: 评论列表
+      tags:
+      - 评论管理
     post:
       description: 发布评论
       parameters:

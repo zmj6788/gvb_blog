@@ -64,9 +64,9 @@ func CommList(o Option) (List []models.ArticleModel, count int64, err error) {
 		return
 	}
 	count = int64(res.Hits.TotalHits.Value) //搜索到结果总条数
-	diggInfo := redis_service.GetDiggInfo()
-	lookInfo := redis_service.GetLookInfo()
-	commentInfo := redis_service.GetCommentInfo()
+	diggInfo := redis_service.NewDigg().GetInfo()
+	lookInfo := redis_service.NewArticleLook().GetInfo()
+	commentInfo := redis_service.NewCommentCount().GetInfo()
 	//将es中的数据解析到go结构体中
 	for _, hit := range res.Hits.Hits {
 		var model models.ArticleModel
@@ -119,7 +119,7 @@ func CommDetail(id string) (model models.ArticleModel, err error) {
 	}
 	err = json.Unmarshal(data, &model)
 	model.ID = res.Id
-	model.LookCount = model.LookCount + redis_service.GetLook(id)
+	model.LookCount = model.LookCount + redis_service.NewArticleLook().Get(id)
 	return
 }
 
@@ -144,8 +144,8 @@ func CommDetailByKeyword(key string) (model models.ArticleModel, err error) {
 		return
 	}
 	model.ID = hit.Id
-	redis_service.Look(hit.Id)
-	model.LookCount = model.LookCount + redis_service.GetLook(hit.Id)
+	redis_service.NewArticleLook().Set(hit.Id)
+	model.LookCount = model.LookCount + redis_service.NewArticleLook().Get(hit.Id)
 	return
 }
 

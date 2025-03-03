@@ -14,14 +14,13 @@ func main() {
 	global.Redis = core.ConnectRedis()
 	global.ESClient = core.EsConnect()
 
-	err := redis_service.Digg("2DtL-5IBBOEDMw_pwTmW")
-	if err != nil {
-		global.Log.Error(err.Error())
-	}
+	digg := redis_service.NewDigg()
+	digg.Set("FhPOWZUBduh9nTRpg7BQ")
+	
 	global.Log.Info("点赞成功")
 
 	// global.Log.Info(redis_service.GetDigg("1ztL-5IBBOEDMw_pRTnk"))
-	global.Log.Info(redis_service.GetDiggInfo())
+	global.Log.Info(digg.GetInfo())
 	// redis_service.DiggClear()
 
 }
