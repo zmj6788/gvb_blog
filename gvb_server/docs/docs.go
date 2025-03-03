@@ -774,6 +774,35 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/comments/{id}": {
+            "post": {
+                "description": "评论点赞",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "评论管理"
+                ],
+                "summary": "评论点赞",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/res.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/digg/article": {
             "post": {
                 "description": "文章点赞",

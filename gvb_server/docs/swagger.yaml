@@ -1443,6 +1443,25 @@ paths:
       summary: 发布评论
       tags:
       - 评论管理
+  /api/comments/{id}:
+    post:
+      description: 评论点赞
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/res.Response'
+      summary: 评论点赞
+      tags:
+      - 评论管理
   /api/digg/article:
     post:
       description: 文章点赞
