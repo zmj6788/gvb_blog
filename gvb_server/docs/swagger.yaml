@@ -1444,6 +1444,24 @@ paths:
       tags:
       - 评论管理
   /api/comments/{id}:
+    delete:
+      description: 评论删除
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/res.Response'
+      summary: 评论删除
+      tags:
+      - 评论管理
     post:
       description: 评论点赞
       parameters:

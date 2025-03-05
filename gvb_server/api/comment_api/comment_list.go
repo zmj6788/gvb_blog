@@ -66,3 +66,8 @@ func FindSubComment(model models.CommentModel, subCommentList *[]models.CommentM
 	}
 	return
 }
+// FindSubCommentCount 查评论下的子评论个数
+func FindSubCommentCount(model models.CommentModel) (subCommentList []models.CommentModel){
+	FindSubComment(model, &subCommentList)
+	return subCommentList
+}
