@@ -29,5 +29,6 @@ func InitRouter() *gin.Engine {
 	ArticleRouter(routerGroup)
 	DiggRouter(routerGroup)
 	CommentRouter(routerGroup)
+	ChatRouter(routerGroup)
 	return router
 }

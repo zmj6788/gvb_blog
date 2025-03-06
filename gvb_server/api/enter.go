@@ -8,9 +8,11 @@ import (
 	images_api "gvb_server/api/images_api"
 	"gvb_server/api/menu_api"
 	"gvb_server/api/message_api"
+	"gvb_server/api/new_api"
 	settings_api "gvb_server/api/settings_api"
 	"gvb_server/api/tag_api"
 	"gvb_server/api/user_api"
+	"gvb_server/api/chat_api"
 )
 
 type ApiGroup struct {
@@ -24,6 +26,8 @@ type ApiGroup struct {
 	ArticleApi  article_api.ArticleApi
 	DiggApi     digg_api.DiggApi
 	CommentApi  comment_api.CommentApi
+	NewApi      new_api.NewApi
+	ChatApi     chat_api.ChatApi
 }
 
 var ApiGroupApp = new(ApiGroup)
