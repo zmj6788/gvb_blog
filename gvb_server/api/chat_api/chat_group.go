@@ -26,11 +26,13 @@ type ChatUser struct {
 var ConnGroupMap = map[string]ChatUser{}
 
 const (
-	TextMsg    ctype.MsgType = 1
-	ImageMsg   ctype.MsgType = 2
-	SystemMsg  ctype.MsgType = 3
-	InRoomMsg  ctype.MsgType = 4
-	OutRoomMsg ctype.MsgType = 5
+	InRoomMsg  ctype.MsgType = 1  // 加入聊天室
+	TextMsg    ctype.MsgType = 2  // 文本消息
+	ImageMsg   ctype.MsgType = 3  // 图片消息
+	VoiceMsg   ctype.MsgType = 4  // 语音消息
+	VideoMsg   ctype.MsgType = 5  // 视频消息
+	SystemMsg  ctype.MsgType = 6  // 系统通知
+	OutRoomMsg ctype.MsgType = 7  // 退出聊天室
 )
 
 type GroupRequest struct {
@@ -38,12 +40,14 @@ type GroupRequest struct {
 	MsgType ctype.MsgType `json:"msg_type"` // 聊天类型
 }
 type GroupResponse struct {
-	NickName string        `json:"nick_name"` // 前端自己生成
-	Avatar   string        `json:"avatar"`    // 头像
-	MsgType  ctype.MsgType `json:"msg_type"`  // 聊天类型
-	Content  string        `json:"content"`   // 聊天的内容
-	Date     time.Time     `json:"date"`      // 消息的时间
+	NickName    string        `json:"nick_name"`    // 前端自己生成
+	Avatar      string        `json:"avatar"`       // 头像
+	MsgType     ctype.MsgType `json:"msg_type"`     // 聊天类型
+	Content     string        `json:"content"`      // 聊天的内容
+	OnlineCount int        `json:"online_count"` // 在线人数
+	Date        time.Time     `json:"date"`         // 消息的时间
 }
+
 // ChatGroupView 群聊
 // @Summary 提供一个WebSocket接口以支持群聊功能
 // @Description 用户通过此接口连接至聊天室，支持文本消息、图片消息等。同时提供系统通知等功能。swag不支持测试
@@ -87,8 +91,11 @@ func (ChatApi) ChatGroupView(c *gin.Context) {
 		if err != nil {
 			// 用户断开聊天
 			SendGroupMsg(conn, GroupResponse{
+				NickName:    chatUser.NickName,
+				Avatar:      chatUser.Avatar,
 				Content: fmt.Sprintf("%s 离开聊天室", chatUser.NickName),
 				MsgType: OutRoomMsg,
+				OnlineCount: len(ConnGroupMap) - 1,
 				Date:    time.Now(),
 			})
 			break
@@ -102,6 +109,7 @@ func (ChatApi) ChatGroupView(c *gin.Context) {
 				NickName: chatUser.NickName,
 				Avatar:   chatUser.Avatar,
 				MsgType:  SystemMsg,
+				OnlineCount: len(ConnGroupMap),
 				Content:  "参数绑定失败",
 			})
 			continue
@@ -114,6 +122,7 @@ func (ChatApi) ChatGroupView(c *gin.Context) {
 					NickName: chatUser.NickName,
 					Avatar:   chatUser.Avatar,
 					MsgType:  SystemMsg,
+					OnlineCount: len(ConnGroupMap),
 					Content:  "消息不能为空",
 				})
 				continue
@@ -123,21 +132,24 @@ func (ChatApi) ChatGroupView(c *gin.Context) {
 				Avatar:   chatUser.Avatar,
 				Content:  request.Content,
 				MsgType:  TextMsg,
+				OnlineCount: len(ConnGroupMap),
 				Date:     time.Now(),
 			})
 		case InRoomMsg:
 			SendGroupMsg(conn, GroupResponse{
-				NickName: chatUser.NickName,
-				Avatar:   chatUser.Avatar,
-				Content:  fmt.Sprintf("%s 进入聊天室", chatUser.NickName),
-				MsgType:  InRoomMsg,
-				Date:     time.Now(),
+				NickName:    chatUser.NickName,
+				Avatar:      chatUser.Avatar,
+				Content:     fmt.Sprintf("%s 进入聊天室", chatUser.NickName),
+				MsgType:     InRoomMsg,
+				OnlineCount: len(ConnGroupMap),
+				Date:        time.Now(),
 			})
 		default:
 			SendMsg(addr, GroupResponse{
 				NickName: chatUser.NickName,
 				Avatar:   chatUser.Avatar,
 				MsgType:  SystemMsg,
+				OnlineCount: len(ConnGroupMap),
 				Content:  "消息类型错误",
 			})
 		}
