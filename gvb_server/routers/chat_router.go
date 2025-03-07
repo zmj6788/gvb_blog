@@ -9,5 +9,6 @@ import (
 func ChatRouter(router *gin.RouterGroup) {
 	ChatApi := api.ApiGroupApp.ChatApi
 	router.GET("/chat_groups", ChatApi.ChatGroupView)
+	router.GET("/chat_groups_records", ChatApi.ChatListView)
 
 }

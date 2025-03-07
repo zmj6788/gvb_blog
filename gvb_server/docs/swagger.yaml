@@ -179,6 +179,15 @@ definitions:
         description: 用户昵称
         type: string
     type: object
+  chat_api.GroupRequest:
+    properties:
+      content:
+        description: 聊天的内容
+        type: string
+      msg_type:
+        description: 聊天类型
+        type: integer
+    type: object
   comment_api.CommentRequest:
     properties:
       article_id:
@@ -1397,6 +1406,45 @@ paths:
       summary: 全文搜索
       tags:
       - 文章管理
+  /api/chat_groups:
+    get:
+      consumes:
+      - application/json
+      description: 用户通过此接口连接至聊天室，支持文本消息、图片消息等。同时提供系统通知等功能。swag不支持测试
+      parameters:
+      - description: 聊天内容
+        in: body
+        name: content
+        required: true
+        schema:
+          $ref: '#/definitions/chat_api.GroupRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Upgrade to WebSocket
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/res.Response'
+      summary: 提供一个WebSocket接口以支持群聊功能
+      tags:
+      - 群聊管理
+  /api/chat_groups_records:
+    get:
+      description: 群聊消息列表
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/res.Response'
+      summary: 群聊消息列表
+      tags:
+      - 群聊管理
   /api/comments:
     get:
       description: 评论列表

@@ -699,6 +699,66 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/chat_groups": {
+            "get": {
+                "description": "用户通过此接口连接至聊天室，支持文本消息、图片消息等。同时提供系统通知等功能。swag不支持测试",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "群聊管理"
+                ],
+                "summary": "提供一个WebSocket接口以支持群聊功能",
+                "parameters": [
+                    {
+                        "description": "聊天内容",
+                        "name": "content",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/chat_api.GroupRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Upgrade to WebSocket",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/res.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/chat_groups_records": {
+            "get": {
+                "description": "群聊消息列表",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "群聊管理"
+                ],
+                "summary": "群聊消息列表",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/res.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/comments": {
             "get": {
                 "description": "评论列表",
@@ -2314,6 +2374,19 @@ const docTemplate = `{
                 "user_nick_name": {
                     "description": "用户昵称",
                     "type": "string"
+                }
+            }
+        },
+        "chat_api.GroupRequest": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "description": "聊天的内容",
+                    "type": "string"
+                },
+                "msg_type": {
+                    "description": "聊天类型",
+                    "type": "integer"
                 }
             }
         },

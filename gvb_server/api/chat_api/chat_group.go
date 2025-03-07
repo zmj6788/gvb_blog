@@ -44,7 +44,16 @@ type GroupResponse struct {
 	Content  string        `json:"content"`   // 聊天的内容
 	Date     time.Time     `json:"date"`      // 消息的时间
 }
-
+// ChatGroupView 群聊
+// @Summary 提供一个WebSocket接口以支持群聊功能
+// @Description 用户通过此接口连接至聊天室，支持文本消息、图片消息等。同时提供系统通知等功能。swag不支持测试
+// @Tags 群聊管理
+// @Accept  json
+// @Produce  json
+// @Param content body GroupRequest true "聊天内容"
+// @Success 200 {string} string "Upgrade to WebSocket"
+// @Failure 400 {object} res.Response
+// @Router /api/chat_groups [get]
 func (ChatApi) ChatGroupView(c *gin.Context) {
 	var upGrader = websocket.Upgrader{
 		CheckOrigin: func(r *http.Request) bool {
