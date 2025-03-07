@@ -3,6 +3,9 @@ package chat_api
 import (
 	"encoding/json"
 	"fmt"
+	"gvb_server/global"
+	"gvb_server/models"
+	"gvb_server/models/ctype"
 	"gvb_server/models/res"
 	"net/http"
 	"strings"
@@ -22,26 +25,24 @@ type ChatUser struct {
 
 var ConnGroupMap = map[string]ChatUser{}
 
-type MsgType int
-
 const (
-	TextMsg    MsgType = 1
-	ImageMsg   MsgType = 2
-	SystemMsg  MsgType = 3
-	InRoomMsg  MsgType = 4
-	OutRoomMsg MsgType = 5
+	TextMsg    ctype.MsgType = 1
+	ImageMsg   ctype.MsgType = 2
+	SystemMsg  ctype.MsgType = 3
+	InRoomMsg  ctype.MsgType = 4
+	OutRoomMsg ctype.MsgType = 5
 )
 
 type GroupRequest struct {
-	Content string  `json:"content"`  // 聊天的内容
-	MsgType MsgType `json:"msg_type"` // 聊天类型
+	Content string        `json:"content"`  // 聊天的内容
+	MsgType ctype.MsgType `json:"msg_type"` // 聊天类型
 }
 type GroupResponse struct {
-	NickName string    `json:"nick_name"` // 随机生成
-	Avatar   string    `json:"avatar"`    // 头像
-	MsgType  MsgType   `json:"msg_type"`  // 聊天类型
-	Content  string    `json:"content"`   // 聊天的内容
-	Date     time.Time `json:"date"`      // 消息的时间
+	NickName string        `json:"nick_name"` // 前端自己生成
+	Avatar   string        `json:"avatar"`    // 头像
+	MsgType  ctype.MsgType `json:"msg_type"`  // 聊天类型
+	Content  string        `json:"content"`   // 聊天的内容
+	Date     time.Time     `json:"date"`      // 消息的时间
 }
 
 func (ChatApi) ChatGroupView(c *gin.Context) {
@@ -58,27 +59,27 @@ func (ChatApi) ChatGroupView(c *gin.Context) {
 		return
 	}
 	addr := conn.RemoteAddr().String()
-	// 随机生成昵称
 	nickName := randomname.GenerateName()
-	// 根据昵称首字头像关联
 	nickNameFirst := string([]rune(nickName)[0])
 	avatar := fmt.Sprintf("uploads/chat_avatar/%s.png", nickNameFirst)
-	// 连接成功，将用户信息保存到map中，群聊列表中，关联地址
+
 	chatUser := ChatUser{
 		Conn:     conn,
 		NickName: nickName,
 		Avatar:   avatar,
 	}
 	ConnGroupMap[addr] = chatUser
-
-	logrus.Infof("%s 连接成功", addr)
+	// 需要去生成昵称，根据昵称首字关联头像地址
+	// 昵称关联 addr
+	logrus.Infof("%s %s 连接成功", addr, chatUser.NickName)
 	for {
 		// 消息类型，消息，错误
 		_, p, err := conn.ReadMessage()
 		if err != nil {
 			// 用户断开聊天
-			SendGroupMsg(GroupResponse{
+			SendGroupMsg(conn, GroupResponse{
 				Content: fmt.Sprintf("%s 离开聊天室", chatUser.NickName),
+				MsgType: OutRoomMsg,
 				Date:    time.Now(),
 			})
 			break
@@ -88,15 +89,27 @@ func (ChatApi) ChatGroupView(c *gin.Context) {
 		err = json.Unmarshal(p, &request)
 		if err != nil {
 			// 参数绑定失败
+			SendMsg(addr, GroupResponse{
+				NickName: chatUser.NickName,
+				Avatar:   chatUser.Avatar,
+				MsgType:  SystemMsg,
+				Content:  "参数绑定失败",
+			})
 			continue
 		}
 		// 判断类型
 		switch request.MsgType {
 		case TextMsg:
 			if strings.TrimSpace(request.Content) == "" {
+				SendMsg(addr, GroupResponse{
+					NickName: chatUser.NickName,
+					Avatar:   chatUser.Avatar,
+					MsgType:  SystemMsg,
+					Content:  "消息不能为空",
+				})
 				continue
 			}
-			SendGroupMsg(GroupResponse{
+			SendGroupMsg(conn, GroupResponse{
 				NickName: chatUser.NickName,
 				Avatar:   chatUser.Avatar,
 				Content:  request.Content,
@@ -104,22 +117,66 @@ func (ChatApi) ChatGroupView(c *gin.Context) {
 				Date:     time.Now(),
 			})
 		case InRoomMsg:
-			SendGroupMsg(GroupResponse{
-				Content: fmt.Sprintf("%s 进入聊天室", chatUser.NickName),
-				Date:    time.Now(),
+			SendGroupMsg(conn, GroupResponse{
+				NickName: chatUser.NickName,
+				Avatar:   chatUser.Avatar,
+				Content:  fmt.Sprintf("%s 进入聊天室", chatUser.NickName),
+				MsgType:  InRoomMsg,
+				Date:     time.Now(),
+			})
+		default:
+			SendMsg(addr, GroupResponse{
+				NickName: chatUser.NickName,
+				Avatar:   chatUser.Avatar,
+				MsgType:  SystemMsg,
+				Content:  "消息类型错误",
 			})
 		}
 
 	}
 	defer conn.Close()
-	// 断开连接，删除map中对应用户数据
 	delete(ConnGroupMap, addr)
 }
 
 // SendGroupMsg 群聊功能
-func SendGroupMsg(response GroupResponse) {
+func SendGroupMsg(conn *websocket.Conn, response GroupResponse) {
 	byteData, _ := json.Marshal(response)
+	_addr := conn.RemoteAddr().String()
+	ip, addr := getIPAndAddr(_addr)
+
+	global.DB.Create(&models.ChatModel{
+		NickName: response.NickName,
+		Avatar:   response.Avatar,
+		Content:  response.Content,
+		IP:       ip,
+		Addr:     addr,
+		IsGroup:  true,
+		MsgType:  response.MsgType,
+	})
 	for _, chatUser := range ConnGroupMap {
 		chatUser.Conn.WriteMessage(websocket.TextMessage, byteData)
 	}
+}
+
+// SendMsg 给某个用户发消息
+func SendMsg(_addr string, response GroupResponse) {
+	byteData, _ := json.Marshal(response)
+	chatUser := ConnGroupMap[_addr]
+	ip, addr := getIPAndAddr(_addr)
+	global.DB.Create(&models.ChatModel{
+		NickName: response.NickName,
+		Avatar:   response.Avatar,
+		Content:  response.Content,
+		IP:       ip,
+		Addr:     addr,
+		IsGroup:  false,
+		MsgType:  response.MsgType,
+	})
+	chatUser.Conn.WriteMessage(websocket.TextMessage, byteData)
+}
+
+func getIPAndAddr(_addr string) (ip string, addr string) {
+	addrList := strings.Split(_addr, ":")
+	addr = "内网"
+	return addrList[0], addr
 }

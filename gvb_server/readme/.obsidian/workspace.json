@@ -13,15 +13,30 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "17.即时通讯/群聊优化.md",
+                "file": "17.即时通讯/随机用户名随机头像.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "群聊优化"
+              "title": "随机用户名随机头像"
+            }
+          },
+          {
+            "id": "4a8a9238efad3c83",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "17.即时通讯/群聊完结，群聊数据入库.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "群聊完结，群聊数据入库"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -163,9 +178,10 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "3d242b3a4a293a81",
+  "active": "4a8a9238efad3c83",
   "lastOpenFiles": [
     "17.即时通讯/随机用户名随机头像.md",
+    "17.即时通讯/群聊完结，群聊数据入库.md",
     "17.即时通讯/群聊优化.md",
     "17.即时通讯/群聊搭建.md",
     "Pasted image 20250306091150.png",
@@ -197,7 +213,6 @@
     "bug.md",
     "1.后端项目创建/image.png",
     "1.后端项目创建/06-响应封装.md",
-    "1.后端项目创建/05-routers配置.md",
     "Pasted image 20241104162054.png",
     "Pasted image 20241104145814.png",
     "Pasted image 20241104145716.png",

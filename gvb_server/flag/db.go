@@ -26,6 +26,7 @@ func Makemigrations() {
 			&models.MenuBannerModel{},
 			&models.LoginDataModel{},
 			&models.FadeBackModel{},
+			&models.ChatModel{},
 		)
 	if err != nil {
 		logrus.Error("初始化数据库失败", err)
