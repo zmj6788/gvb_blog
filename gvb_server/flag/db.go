@@ -3,6 +3,7 @@ package flag
 import (
 	"gvb_server/global"
 	"gvb_server/models"
+	"gvb_server/plugins/log_stash"
 
 	"github.com/sirupsen/logrus"
 )
@@ -27,6 +28,7 @@ func Makemigrations() {
 			&models.LoginDataModel{},
 			&models.FadeBackModel{},
 			&models.ChatModel{},
+			&log_stash.LogStashModel{},
 		)
 	if err != nil {
 		logrus.Error("初始化数据库失败", err)
