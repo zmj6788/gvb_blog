@@ -38,7 +38,7 @@ func (*MenuApi) MenuListView(c *gin.Context) {
 	// 这意味着在查询 menuBanners 的同时，会预加载每个 menuBanner 的 BannerModel 关联数据。
 	global.DB.Preload("BannerModel").Order("sort desc").Find(&menuBanners, "menu_id in ?", menuIdList)
 	//封装响应数据
-	var menus []MenuResponse
+	var menus = make([]MenuResponse,0)
 	for _, menu := range menuList {
 		//menu 就是一个菜单
 

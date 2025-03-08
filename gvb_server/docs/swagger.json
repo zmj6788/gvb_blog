@@ -1185,6 +1185,116 @@
                 }
             }
         },
+        "/api/logs": {
+            "get": {
+                "description": "日志列表",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "日志管理"
+                ],
+                "summary": "日志列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "搜索关键字",
+                        "name": "key",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            1,
+                            2,
+                            3,
+                            4
+                        ],
+                        "type": "integer",
+                        "x-enum-comments": {
+                            "DebugLevel": "调试级别",
+                            "ErrorLevel": "错误级别",
+                            "InfoLevel": "普通级别",
+                            "WarnLevel": "警告级别"
+                        },
+                        "x-enum-varnames": [
+                            "DebugLevel",
+                            "InfoLevel",
+                            "WarnLevel",
+                            "ErrorLevel"
+                        ],
+                        "name": "level",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页显示多少条",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "排序",
+                        "name": "sort",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/res.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/res.ListResponse-log_stash_LogStashModel"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "批量删除日志",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "日志管理"
+                ],
+                "summary": "批量删除日志",
+                "parameters": [
+                    {
+                        "description": "图片id列表",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.RemoveRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/res.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/menu_names": {
             "get": {
                 "description": "菜单名称列表",
@@ -2688,6 +2798,64 @@
                 }
             }
         },
+        "log_stash.Level": {
+            "type": "integer",
+            "enum": [
+                1,
+                2,
+                3,
+                4
+            ],
+            "x-enum-comments": {
+                "DebugLevel": "调试级别",
+                "ErrorLevel": "错误级别",
+                "InfoLevel": "普通级别",
+                "WarnLevel": "警告级别"
+            },
+            "x-enum-varnames": [
+                "DebugLevel",
+                "InfoLevel",
+                "WarnLevel",
+                "ErrorLevel"
+            ]
+        },
+        "log_stash.LogStashModel": {
+            "type": "object",
+            "properties": {
+                "addr": {
+                    "description": "地址",
+                    "type": "string"
+                },
+                "content": {
+                    "description": "日志消息内容",
+                    "type": "string"
+                },
+                "created_at": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "主键ID",
+                    "type": "integer"
+                },
+                "ip": {
+                    "description": "ip",
+                    "type": "string"
+                },
+                "level": {
+                    "description": "日志的等级",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/log_stash.Level"
+                        }
+                    ]
+                },
+                "user_id": {
+                    "description": "登录用户的用户id，需要自己在查询的时候做关联查询",
+                    "type": "integer"
+                }
+            }
+        },
         "menu_api.Banner": {
             "type": "object",
             "properties": {
@@ -3305,6 +3473,17 @@
                 },
                 "list": {
                     "$ref": "#/definitions/images_api.FileUploadResponse"
+                }
+            }
+        },
+        "res.ListResponse-log_stash_LogStashModel": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "list": {
+                    "$ref": "#/definitions/log_stash.LogStashModel"
                 }
             }
         },

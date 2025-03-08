@@ -400,6 +400,48 @@ definitions:
     - id
     - name
     type: object
+  log_stash.Level:
+    enum:
+    - 1
+    - 2
+    - 3
+    - 4
+    type: integer
+    x-enum-comments:
+      DebugLevel: 调试级别
+      ErrorLevel: 错误级别
+      InfoLevel: 普通级别
+      WarnLevel: 警告级别
+    x-enum-varnames:
+    - DebugLevel
+    - InfoLevel
+    - WarnLevel
+    - ErrorLevel
+  log_stash.LogStashModel:
+    properties:
+      addr:
+        description: 地址
+        type: string
+      content:
+        description: 日志消息内容
+        type: string
+      created_at:
+        description: 创建时间
+        type: string
+      id:
+        description: 主键ID
+        type: integer
+      ip:
+        description: ip
+        type: string
+      level:
+        allOf:
+        - $ref: '#/definitions/log_stash.Level'
+        description: 日志的等级
+      user_id:
+        description: 登录用户的用户id，需要自己在查询的时候做关联查询
+        type: integer
+    type: object
   menu_api.Banner:
     properties:
       id:
@@ -828,6 +870,13 @@ definitions:
         type: integer
       list:
         $ref: '#/definitions/images_api.FileUploadResponse'
+    type: object
+  res.ListResponse-log_stash_LogStashModel:
+    properties:
+      count:
+        type: integer
+      list:
+        $ref: '#/definitions/log_stash.LogStashModel'
     type: object
   res.ListResponse-models_AdvertModel:
     properties:
@@ -1718,6 +1767,78 @@ paths:
       summary: 退出登录
       tags:
       - 用户管理
+  /api/logs:
+    delete:
+      description: 批量删除日志
+      parameters:
+      - description: 图片id列表
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.RemoveRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/res.Response'
+      summary: 批量删除日志
+      tags:
+      - 日志管理
+    get:
+      description: 日志列表
+      parameters:
+      - description: 搜索关键字
+        in: query
+        name: key
+        type: string
+      - enum:
+        - 1
+        - 2
+        - 3
+        - 4
+        in: query
+        name: level
+        type: integer
+        x-enum-comments:
+          DebugLevel: 调试级别
+          ErrorLevel: 错误级别
+          InfoLevel: 普通级别
+          WarnLevel: 警告级别
+        x-enum-varnames:
+        - DebugLevel
+        - InfoLevel
+        - WarnLevel
+        - ErrorLevel
+      - description: 每页显示多少条
+        in: query
+        name: limit
+        type: integer
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 排序
+        in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/res.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/res.ListResponse-log_stash_LogStashModel'
+              type: object
+      summary: 日志列表
+      tags:
+      - 日志管理
   /api/menu_names:
     get:
       description: 菜单名称列表

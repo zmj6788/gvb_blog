@@ -1,9 +1,11 @@
 package user_api
 
 import (
+	"fmt"
 	"gvb_server/global"
 	"gvb_server/models"
 	"gvb_server/models/res"
+	"gvb_server/plugins/log_stash"
 	"gvb_server/untils/jwts"
 	"gvb_server/untils/pwd"
 
@@ -24,6 +26,8 @@ type EmailLoginRequest struct {
 // @Produce json
 // @Success 200 {object} res.Response{}
 func (UserApi) EmailLoginView(c *gin.Context) {
+	// 日志实例化
+	log := log_stash.NewLogByGin(c)
 	// 获取邮箱登录参数
 	var req EmailLoginRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -35,6 +39,7 @@ func (UserApi) EmailLoginView(c *gin.Context) {
 	var userModel models.UserModel
 	if err := global.DB.Take(&userModel, "user_name = ?  or  email = ?", req.UserName, req.UserName).Error; err != nil {
 		global.Log.Warn("账号不存在")
+		log.Warn(fmt.Sprintf("%s 账户不存在", req.UserName))
 		res.FailWithMessage("账号不存在", c)
 		return
 	}
@@ -43,6 +48,7 @@ func (UserApi) EmailLoginView(c *gin.Context) {
 	isCheck := pwd.CheckPwd(userModel.Password, req.Password)
 	if !isCheck {
 		global.Log.Warn("密码错误")
+		log.Warn(fmt.Sprintf("用户名密码错误 %s , %s",req.UserName, req.Password))
 		res.FailWithMessage("密码错误", c)
 		return
 	}
@@ -59,8 +65,11 @@ func (UserApi) EmailLoginView(c *gin.Context) {
 	// global.DB.Model(&userModel).Update("token", token)
 	if err != nil {
 		global.Log.Error("生成token失败", err.Error())
+		log.Error(fmt.Sprintf("生成token失败 %s ", err.Error()))
 		res.FailWithMessage("生成token失败", c)
 		return
 	}
+	log = log_stash.New(c.ClientIP(),token)
+	log.Info("用户登录成功")
 	res.Ok(gin.H{"token":token}, "登录成功", c)
 }

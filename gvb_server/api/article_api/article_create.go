@@ -5,6 +5,7 @@ import (
 	"gvb_server/models"
 	"gvb_server/models/ctype"
 	"gvb_server/models/res"
+	"gvb_server/plugins/log_stash"
 	"gvb_server/service/es_service"
 	"gvb_server/untils/jwts"
 	"strings"
@@ -48,7 +49,7 @@ func (ArticleApi) ArticleCreateView(c *gin.Context) {
 		res.FailWithError(err, &cr, c)
 		return
 	}
-
+	log := log_stash.NewLogByGin(c)
 	// 获取当前用户信息
 	_claims, _ := c.Get("claims")
 	claims := _claims.(*jwts.CustomClaims)
@@ -154,6 +155,7 @@ func (ArticleApi) ArticleCreateView(c *gin.Context) {
 	}
 	// 添加文章后，要同步文章数据到全文搜索的表中
 	go es_service.AsyncArticleByFullText(article.ID, article.Title, article.Content)
+	log.Info("文章发布成功")
 	res.OkWithMessage("文章发布成功", c)
 
 }

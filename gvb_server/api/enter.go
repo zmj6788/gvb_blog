@@ -3,16 +3,17 @@ package api
 import (
 	advert_api "gvb_server/api/advert_api"
 	"gvb_server/api/article_api"
+	"gvb_server/api/chat_api"
 	"gvb_server/api/comment_api"
 	"gvb_server/api/digg_api"
 	images_api "gvb_server/api/images_api"
+	"gvb_server/api/log_api"
 	"gvb_server/api/menu_api"
 	"gvb_server/api/message_api"
 	"gvb_server/api/new_api"
 	settings_api "gvb_server/api/settings_api"
 	"gvb_server/api/tag_api"
 	"gvb_server/api/user_api"
-	"gvb_server/api/chat_api"
 )
 
 type ApiGroup struct {
@@ -28,6 +29,7 @@ type ApiGroup struct {
 	CommentApi  comment_api.CommentApi
 	NewApi      new_api.NewApi
 	ChatApi     chat_api.ChatApi
+	LogApi      log_api.LogApi
 }
 
 var ApiGroupApp = new(ApiGroup)
