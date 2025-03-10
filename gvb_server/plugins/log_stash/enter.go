@@ -2,6 +2,7 @@ package log_stash
 
 import (
 	"gvb_server/global"
+	"gvb_server/untils"
 	"gvb_server/untils/jwts"
 
 	"github.com/gin-gonic/gin"
@@ -21,11 +22,11 @@ func New(ip string, token string) *Log {
 	if err == nil {
 		userID = claims.UserID
 	}
-
+	addr := untils.GetAddr(ip)
 	// 拿到用户id
 	return &Log{
 		ip:     ip,
-		addr:   "内网",
+		addr:   addr,
 		userId: userID,
 	}
 }

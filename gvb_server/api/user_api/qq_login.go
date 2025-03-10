@@ -6,6 +6,7 @@ import (
 	"gvb_server/models/ctype"
 	"gvb_server/models/res"
 	"gvb_server/plugins/qq"
+	"gvb_server/untils"
 	"gvb_server/untils/jwts"
 	"gvb_server/untils/pwd"
 	"gvb_server/untils/random"
@@ -14,7 +15,7 @@ import (
 )
 
 func (UserApi) QQLoginView(c *gin.Context) {
-	
+
 	//code从哪里得到
 
 	code := c.Query("code")
@@ -32,6 +33,7 @@ func (UserApi) QQLoginView(c *gin.Context) {
 	//根据openid判断用户是否存在
 	var user models.UserModel
 	err = global.DB.Take(&user, "token = ?", OpenID).Error
+	ip, addr := untils.GetAddrByGin(c)
 	if err != nil {
 		// 用户不存在
 		// 注册
@@ -41,9 +43,9 @@ func (UserApi) QQLoginView(c *gin.Context) {
 			UserName:   OpenID, //由于用户可以绑定邮箱登录,这里的用户名随意一点也可以
 			Password:   hashPwd,
 			Avatar:     qqInfo.Avatar,
-			Addr:       "内网",
+			Addr:       addr,
 			Token:      qqInfo.OpenID,
-			IP:         c.ClientIP(),
+			IP:         ip,
 			Role:       ctype.PermissionUser,
 			SignStatus: ctype.SignQQ,
 		}
@@ -66,13 +68,13 @@ func (UserApi) QQLoginView(c *gin.Context) {
 		res.FailWithMessage("token生成失败", c)
 		return
 	}
-		global.DB.Create(&models.LoginDataModel{
+	global.DB.Create(&models.LoginDataModel{
 		UserID:    user.ID,
-		IP:        c.ClientIP(),
+		IP:       ip,
 		NickName:  user.NickName,
 		Token:     token,
 		Device:    c.Request.UserAgent(),
-		Addr:     "内网",
+		Addr:      addr,
 		LoginType: ctype.SignQQ,
 	})
 	res.Ok(gin.H{"token": token}, "登录成功", c)

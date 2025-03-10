@@ -23,6 +23,9 @@ func main() {
 	global.Redis = core.ConnectRedis()
 	//es连接
 	global.ESClient = core.EsConnect()
+	//连接ip地址数据库
+	core.InitAddrDB()
+	defer global.AddrDB.Close()
 	//命令行参数绑定迁移表结构函数
 	option := flag.Parse()
 	if flag.IsWebStop(option) {

@@ -5,6 +5,7 @@ import (
 	"gvb_server/global"
 	"gvb_server/models"
 	"gvb_server/models/ctype"
+	"gvb_server/untils"
 	"gvb_server/untils/pwd"
 )
 
@@ -19,6 +20,7 @@ func (UserService) CreateUser(nickName string, userName string, password string,
 	}
 	hashPwd := pwd.HashPwd(password)
 	avatar := "http://localhost:8080/api/uploads/avatar/1.jpg"
+	addr := untils.GetAddr(ip)
 	err = global.DB.Create(&models.UserModel{
 		NickName:   nickName,
 		UserName:   userName,
@@ -27,7 +29,7 @@ func (UserService) CreateUser(nickName string, userName string, password string,
 		Role:       role,
 		Avatar:     avatar,
 		IP:         ip,
-		Addr:       "内网地址",
+		Addr:       addr,
 		SignStatus: ctype.SignEmail,
 
 	}).Error
