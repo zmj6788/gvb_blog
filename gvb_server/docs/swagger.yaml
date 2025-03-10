@@ -1590,6 +1590,19 @@ paths:
       summary: 七日内登录注册数据统计
       tags:
       - 数据管理
+  /api/data_sum:
+    get:
+      description: 一些总数的统计
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/res.Response'
+      summary: 一些总数的统计
+      tags:
+      - 数据管理
   /api/digg/article:
     post:
       description: 文章点赞

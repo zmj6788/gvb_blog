@@ -903,6 +903,26 @@
                 }
             }
         },
+        "/api/data_sum": {
+            "get": {
+                "description": "一些总数的统计",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "数据管理"
+                ],
+                "summary": "一些总数的统计",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/res.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/digg/article": {
             "post": {
                 "description": "文章点赞",
