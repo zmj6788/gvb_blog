@@ -1577,6 +1577,19 @@ paths:
       summary: 评论点赞
       tags:
       - 评论管理
+  /api/data_seven_login:
+    get:
+      description: 七日内登录注册数据统计
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/res.Response'
+      summary: 七日内登录注册数据统计
+      tags:
+      - 数据管理
   /api/digg/article:
     post:
       description: 文章点赞

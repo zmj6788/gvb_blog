@@ -31,5 +31,6 @@ func InitRouter() *gin.Engine {
 	CommentRouter(routerGroup)
 	ChatRouter(routerGroup)
 	LogRouter(routerGroup)
+	DataRouter(routerGroup)
 	return router
 }

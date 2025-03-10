@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"gvb_server/global"
 	"gvb_server/models"
+	"gvb_server/models/ctype"
 	"gvb_server/models/res"
 	"gvb_server/plugins/log_stash"
 	"gvb_server/untils/jwts"
@@ -48,7 +49,7 @@ func (UserApi) EmailLoginView(c *gin.Context) {
 	isCheck := pwd.CheckPwd(userModel.Password, req.Password)
 	if !isCheck {
 		global.Log.Warn("密码错误")
-		log.Warn(fmt.Sprintf("用户名密码错误 %s , %s",req.UserName, req.Password))
+		log.Warn(fmt.Sprintf("用户名密码错误 %s , %s", req.UserName, req.Password))
 		res.FailWithMessage("密码错误", c)
 		return
 	}
@@ -69,7 +70,17 @@ func (UserApi) EmailLoginView(c *gin.Context) {
 		res.FailWithMessage("生成token失败", c)
 		return
 	}
-	log = log_stash.New(c.ClientIP(),token)
+	log = log_stash.New(c.ClientIP(), token)
 	log.Info("用户登录成功")
-	res.Ok(gin.H{"token":token}, "登录成功", c)
+	global.DB.Create(&models.LoginDataModel{
+		UserID:    userModel.ID,
+		IP:        c.ClientIP(),
+		NickName:  userModel.NickName,
+		Token:     token,
+		Device:    c.Request.UserAgent(),
+		Addr:     "内网",
+		LoginType: ctype.SignEmail,
+	})
+
+	res.Ok(gin.H{"token": token}, "登录成功", c)
 }

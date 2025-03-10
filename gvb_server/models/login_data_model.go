@@ -1,5 +1,7 @@
 package models
 
+import "gvb_server/models/ctype"
+
 //统计用户登录数据
 type LoginDataModel struct {
 	MODEL
@@ -10,4 +12,5 @@ type LoginDataModel struct {
 	Token     string    `gorm:"size:256" json:"token"`
 	Device    string    `gorm:"size:256" json:"device"` // 设备
 	Addr      string    `gorm:"size:64" json:"addr"`
+	LoginType ctype.SignStatus `gorm:"size:type=smallint(6)" json:"login_type"` // 登录方式
 }
