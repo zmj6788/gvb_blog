@@ -2,11 +2,13 @@ package main
 
 import (
 	"gvb_server/core"
+	_ "gvb_server/docs"
 	"gvb_server/flag"
 	"gvb_server/global"
 	"gvb_server/routers"
-	_"gvb_server/docs"
+	"gvb_server/untils"
 )
+
 // @title gvb_server API文档
 // @version 1.0
 // @description gvb_server API文档
@@ -37,7 +39,7 @@ func main() {
 	router := routers.InitRouter()
 	//启动服务
 	addr := global.Config.System.Addr()
-	global.Log.Infof("gvb_server运行在: %s", addr)
+	untils.PrintSystem()
 	err  := router.Run(addr)
 	if err != nil {
 	}
