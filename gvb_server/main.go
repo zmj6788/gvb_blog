@@ -6,6 +6,7 @@ import (
 	"gvb_server/flag"
 	"gvb_server/global"
 	"gvb_server/routers"
+	"gvb_server/service/cron_service"
 	"gvb_server/untils"
 )
 
@@ -35,6 +36,8 @@ func main() {
 		//控制迁移表结构后退出
 		return
 	}
+	// 定时任务初始化，同步文章数据以及评论数据从redis到es或mysql中
+	cron_service.CronInit()
 	//路由初始化
 	router := routers.InitRouter()
 	//启动服务
